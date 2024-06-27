@@ -3,4 +3,28 @@
 <body style="background-color:MediumSeaGreen;">
 <br />
 <p>This is the Rolling Test 1 page</p>
+
+{% load static %}
+<script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/rolling_1_utils.js' %}"></script>
+
+<div hidden>
+<img id="dice_smile" src="{% static 'images/Dice Faces - 1 - Smile - v1 resize.png' %}" alt="Dice Smile Image" width="32" height="32">
+<img id="dice_mad" src="{% static 'images/Dice Faces - 2 - Mad - v1 resize.png' %}" alt="Dice Mad Image" width="32" height="32">
+<img id="dice_frown" src="{% static 'images/Dice Faces - 3 - Frown - v1 resize.png' %}" alt="Dice Frown Image" width="32" height="32">
+</div>
+
+<p><button onclick="Action()">Action!</button></p>
+
+<p>
+    <button onclick="First()">First</button>
+    <button onclick="Second()">Second</button>
+    <button onclick="Third()">Third</button>
+</p>
+
+<canvas id="canvas_1" width="400" height="100" style="border:2px solid #323232;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+
 {% endblock %}
