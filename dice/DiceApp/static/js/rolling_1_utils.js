@@ -7,15 +7,6 @@ var dieToDraw = "dice_smile";
 const numDieFaces = 6;
 var intervalId = 0;     // used for the clearInterval function
 
-function DiceObj(name, faces) {
-    this.name = name;
-    this.faces = faces;
-
-    this.fullName = function() {
-        return this.name + " " + this.faces;
-    };
-}
-
 diceSound_shake = "";
 diceSound_roll1 = "";
 diceSound_roll2 = "";

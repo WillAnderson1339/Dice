@@ -17,3 +17,6 @@ def page_router(request):
 	else:
 		return HttpResponse("unknown page request " + request.path)
 
+def get_dice_images(request):
+	print('get_dice_images()')
+	return HttpResponse("apple banana orange")

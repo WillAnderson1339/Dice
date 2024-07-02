@@ -6,14 +6,27 @@ var tickRandom = -1;        // This will hold the randomized number choice dice 
 var dieToDraw = "dice_smile";
 const numDieFaces = 6;
 diceImages = [];
+diceSounds = [];
 var intervalId = 0;     // used for the clearInterval function
 
+
+// the dice object
 function DiceObj(name, faces) {
     this.name = name;
-    this.faces = faces;
+    this.faces = faces;     // will hold an object of {face_id, face_file}
 
     this.fullName = function() {
         return this.name + " " + this.faces;
+    };
+}
+
+// the sound effects object
+function SoundObj(name, sound) {
+    this.name = name;
+    this.sound = sound;
+
+    this.fullName = function() {
+        return this.name + " " + this.sound;
     };
 }
 
@@ -37,22 +50,43 @@ movementVars = {
 $( document ).ready(function() {
     //console.log( "Ready!" );
 
+/* moved to after the sound objects are added to the DOM
     // load the sounds
     diceSound_shake = document.getElementById("dice_shake_1");
     diceSound_roll1 = document.getElementById("dice_roll_1");
     diceSound_roll2 = document.getElementById("dice_roll_2");
     diceSound_roll3 = document.getElementById("dice_roll_3");
+*/
+    console.log('jQuery =', $);
+
+    getUrl_DiceImages = "http://127.0.0.1:8000/getDiceImages";
+    $.get(getUrl_DiceImages, getCallback_DiceImages);
+/*
+    jQuery.ajax({
+    url: getUrl_DiceImages,
+    dataType: 'text',
+    type: "GET",
+      success: getCallback_DiceImages
+    });
+*/
 
     // initialize the variables
     initVars();
 
-    // load the dice images
+    // load the dice images and sounds
     loadDiceImages();
+    loadDiceSounds();
 });
 
+function getCallback_DiceImages(data, status) {
+    console.log("getCallback_DiceImages()");
+
+    console.log("status: ", status);
+    console.log("data: ", data);
+}
 
 function loadDiceImages() {
-    //console.log( "loadDiceImages()" );
+    console.log("loadDiceImages()");
 
 /*
     diceImages[0][0] = "First row first cell";
@@ -73,6 +107,7 @@ function loadDiceImages() {
     }
 
     // load array with the dice faces
+    /*
     faces = "";
     for (let i = 0; i < numDice; i++) {
         for (let j = 0; j < 3; j++){
@@ -81,12 +116,92 @@ function loadDiceImages() {
         }
         diceImages[i].faces = faces;
     }
+    */
+    faces = [];
+    face_id = "dice_smile";
+    face_file = "static/images/Dice Faces - 1 - Smile - v1 resize.png";
+    faces.push({face_id, face_file});
+    face_id = "dice_mad";
+    face_file = "static/images/Dice Faces - 2 - Mad - v1 resize.png";
+    faces.push({face_id, face_file});
+    face_id = "dice_frown";
+    face_file = "static/images/Dice Faces - 3 - Frown - v1 resize.png";
+    faces.push({face_id, face_file});
+    face_id = "dice_wink";
+    face_file = "static/images/Dice Faces - 4 - Wink - v1 resize.png";
+    faces.push({face_id, face_file});
+    face_id = "dice_grim";
+    face_file = "static/images/Dice Faces - 5 - Grim - v1 resize.png";
+    faces.push({face_id, face_file});
+    face_id = "dice_sad";
+    face_file = "static/images/Dice Faces - 6 - Sad - v1 resize.png";
+    faces.push({face_id, face_file});
 
-    console.log(diceImages[0].name);
-    console.log(diceImages[0].faces);
+    //console.log("array:", faces);
+    diceImages[0].faces = faces;
 
-    console.log(diceImages[1].name);
-    console.log(diceImages[1].faces);
+    // insert the image elements into the Dom
+    numThisDieFaces = diceImages[0].faces.length;
+    for (let j = 0; j < numDieFaces; j++) {
+        diceFaceId = diceImages[0].faces[j].face_id
+        diceFaceFile = diceImages[0].faces[j].face_file;
+        elementText = "<img id=\"" + diceFaceId + "\" src=\"" + diceFaceFile + "\" alt=\"Dice Smile Image\" width=\"32\" height=\"32\">";
+        //console.log("elementText = ", elementText);
+
+        $("#dice_images_id").append(elementText);
+    }
+
+    //console.log(elementText);
+
+}
+
+function loadDiceSounds() {
+    console.log( "loadDiceSounds()" );
+
+    // load array with the dice sounds
+    sound_id = "dice_shake_1";
+    sound_file = "static/sounds/diceshake-90280.mp3";
+    //soundItem = new SoundObj(sound_id, sound_file);
+    diceSounds.push({sound_id, sound_file});
+
+    sound_id = "dice_roll_1";
+    sound_file = "static/sounds/dice-142528.mp3";
+    //soundItem = new SoundObj(sound_id, sound_file);
+    diceSounds.push({sound_id, sound_file});
+
+    sound_id = "dice_roll_2";
+    sound_file = "static/sounds/dice_roll-96878.mp3";
+    //soundItem = new SoundObj(sound_id, sound_file);
+    diceSounds.push({sound_id, sound_file});
+
+    sound_id = "dice_roll_3";
+    sound_file = "static/sounds/diceland-90279.mp3";
+    //soundItem = new SoundObj(sound_id, sound_file);
+    diceSounds.push({sound_id, sound_file});
+
+    console.log("Sound array:", diceSounds);
+
+    // insert the sound elements into the Dom
+    numSounds = diceSounds.length;
+    for (let j = 0; j < numSounds; j++) {
+        diceSoundId = diceSounds[j].sound_id;
+        diceSoundFile = diceSounds[j].sound_file;
+        //console.log("sound id: ", diceSoundId);
+        //console.log("sound file: ", diceSoundFile);
+    //<audio id="dice_shake_1"><source src="{% static 'sounds/diceshake-90280.mp3' %}" type="audio/mpeg">audio not supported</audio>
+        elementText = "<audio id=\"" + diceSoundId + "\"><source src=\"" + diceSoundFile + "\" type=\"audio/mpeg\">audio not supported</audio>";
+        //console.log("elementText = ", elementText);
+
+        $("#dice_sounds_id").append(elementText);
+    }
+
+    //console.log(elementText);
+
+    // load the sounds
+    diceSound_shake = document.getElementById("dice_shake_1");
+    diceSound_roll1 = document.getElementById("dice_roll_1");
+    diceSound_roll2 = document.getElementById("dice_roll_2");
+    diceSound_roll3 = document.getElementById("dice_roll_3");
 }
 
 function initVars() {
