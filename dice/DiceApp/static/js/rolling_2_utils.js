@@ -5,6 +5,7 @@ const tickMax = 11;
 var tickRandom = -1;        // This will hold the randomized number choice dice face
 var dieToDraw = "dice_smile";
 const numDieFaces = 6;
+diceImages = [];
 var intervalId = 0;     // used for the clearInterval function
 
 function DiceObj(name, faces) {
@@ -44,7 +45,49 @@ $( document ).ready(function() {
 
     // initialize the variables
     initVars();
+
+    // load the dice images
+    loadDiceImages();
 });
+
+
+function loadDiceImages() {
+    //console.log( "loadDiceImages()" );
+
+/*
+    diceImages[0][0] = "First row first cell";
+    diceImages[0][1] = "First row second cell";
+    diceImages[0][2] = "First row third cell";
+    diceImages[1][0] = "Second row first cell";
+    diceImages[1][1] = "Second row second cell";
+    diceImages[1][2] = "Second row third cell";
+*/
+
+    // create array with the number of dice
+    numDice = 2;
+    for (let i = 0; i < numDice; i++) {
+        name = "Name" + i;
+        faces = ["", ""];
+        diceItem = new DiceObj(name, faces);
+        diceImages.push(diceItem);
+    }
+
+    // load array with the dice faces
+    faces = "";
+    for (let i = 0; i < numDice; i++) {
+        for (let j = 0; j < 3; j++){
+            face = "face" + j;
+            faces += face;
+        }
+        diceImages[i].faces = faces;
+    }
+
+    console.log(diceImages[0].name);
+    console.log(diceImages[0].faces);
+
+    console.log(diceImages[1].name);
+    console.log(diceImages[1].faces);
+}
 
 function initVars() {
     rotation = Number($('#rotation').val());
@@ -163,7 +206,6 @@ function PickDiceSound() {
 }
 
 function StartRoll() {
-
     // choose the random dice face result number
     tickRandom = Math.floor(Math.random() * numDieFaces) + 1;
 
@@ -207,8 +249,7 @@ function ShowNextDie() {
 
     ShowSingleDie(dieName);
 
-//    if (tickCount >= tickMax) {
-    if (tickCount >= tickRandom) {
+    if (tickCount >= tickMax) {
         clearInterval(intervalId);
         diceSound_rolling.pause();
         ShowResult();

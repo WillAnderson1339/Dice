@@ -1,12 +1,13 @@
 {% extends "base.html" %} {% block title %} Home Page {% endblock %}
 {% block content %}
-<body style="background-color:MediumSeaGreen;">
+<!-- good web page for HTML colours: https://www.computerhope.com/htmcolor.htm  -->
+<body style="background-color:LightSeaGreen;">
 <br />
-<p>This is the Rolling Test 1 page</p>
+<p>This is the Rolling Test 2 page - loading the dice images dynamically</p>
 
 {% load static %}
 <script src="{% static 'js/utils.js' %}"></script>
-<script src="{% static 'js/rolling_1_utils.js' %}"></script>
+<script src="{% static 'js/rolling_2_utils.js' %}"></script>
 
 <!-- dice images -->
 <div hidden>

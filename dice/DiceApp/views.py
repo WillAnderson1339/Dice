@@ -12,6 +12,8 @@ def page_router(request):
 		return render(request, "about.html")
 	elif "roll_1" in request.path.lower():
 		return render(request, "rolling_test_1.html")
+	elif "roll_2" in request.path.lower():
+		return render(request, "rolling_test_2.html")
 	else:
 		return HttpResponse("unknown page request " + request.path)
 
