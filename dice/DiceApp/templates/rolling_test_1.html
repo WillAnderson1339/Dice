@@ -8,23 +8,52 @@
 <script src="{% static 'js/utils.js' %}"></script>
 <script src="{% static 'js/rolling_1_utils.js' %}"></script>
 
+<!-- dice images -->
 <div hidden>
-<img id="dice_smile" src="{% static 'images/Dice Faces - 1 - Smile - v1 resize.png' %}" alt="Dice Smile Image" width="32" height="32">
-<img id="dice_mad" src="{% static 'images/Dice Faces - 2 - Mad - v1 resize.png' %}" alt="Dice Mad Image" width="32" height="32">
-<img id="dice_frown" src="{% static 'images/Dice Faces - 3 - Frown - v1 resize.png' %}" alt="Dice Frown Image" width="32" height="32">
+    <img id="dice_smile" src="{% static 'images/Dice Faces - 1 - Smile - v1 resize.png' %}" alt="Dice Smile Image" width="32" height="32">
+    <img id="dice_mad" src="{% static 'images/Dice Faces - 2 - Mad - v1 resize.png' %}" alt="Dice Mad Image" width="32" height="32">
+    <img id="dice_frown" src="{% static 'images/Dice Faces - 3 - Frown - v1 resize.png' %}" alt="Dice Frown Image" width="32" height="32">
+    <img id="dice_wink" src="{% static 'images/Dice Faces - 4 - Wink - v1 resize.png' %}" alt="Dice Wink Image" width="32" height="32">
+    <img id="dice_grim" src="{% static 'images/Dice Faces - 5 - Grim - v1 resize.png' %}" alt="Dice Grim Image" width="32" height="32">
+    <img id="dice_sad" src="{% static 'images/Dice Faces - 6 - Sad - v1 resize.png' %}" alt="Dice Sad Image" width="32" height="32">
 </div>
 
-<p><button onclick="Action()">Action!</button></p>
+<!-- dice sounds -->
+<div hidden>
+    <audio id="dice_shake_1"><source src="{% static 'sounds/diceshake-90280.mp3' %}" type="audio/mpeg">audio not supported</audio>
+    <audio id="dice_roll_1" loop><source src="{% static 'sounds/dice-142528.mp3' %}" type="audio/mpeg">audio not supported</audio>
+    <audio id="dice_roll_2"><source src="{% static 'sounds/dice_roll-96878.mp3' %}" type="audio/mpeg">audio not supported</audio>
+    <audio id="dice_roll_3"><source src="{% static 'sounds/diceland-90279.mp3' %}" type="audio/mpeg">audio not supported</audio>
+</div>
+
+<div>
+    <label for="rotation">Rotation:</label>
+    <input type="number" id="rotation" name="scale" value="45" size = "3" min = "0" max = "360" step = "1" style="width: 3em">&nbsp&nbsp
+    <label for="scale">Scale:</label>
+    <input type="number" id="scale" name="scale" value="1" size = "3" min = "0" max = "10" style="width: 3em">&nbsp&nbsp
+    <label for="interval">Interval:</label>
+    <input type="number" id="interval" name="interval" value="5" size = "3" min = "0" max = "10" style="width: 3em"><br><br>
+    <p>
+        <button onclick="Action()">Action!</button>
+    </p>
+    <br />
+</div>
 
 <p>
-    <button onclick="First()">First</button>
-    <button onclick="Second()">Second</button>
-    <button onclick="Third()">Third</button>
+    <button onclick="ShowSingleDie('dice_smile')">First</button>
+    <button onclick="ShowSingleDie('dice_mad')">Second</button>
+    <button onclick="ShowSingleDie('dice_frown')">Third</button>
+    <button onclick="ShowSingleDie('dice_wink')">Fourth</button>
+    <button onclick="ShowSingleDie('dice_grim')">Fifth</button>
+    <button onclick="ShowSingleDie('dice_sad')">Sixth</button>
+    <button onclick="ShowSingleDie('dice_smile')">Seventh</button>
+    <br /><br />
+    <button onclick="ShowNextDie()">Next</button>
 </p>
 
-<canvas id="canvas_1" width="400" height="100" style="border:2px solid #323232;">
-Your browser does not support the HTML canvas tag.
-</canvas>
+<canvas id="canvas_1" width="500" height="100" style="border:2px solid #323232;">canvas tag not supported.</canvas>
+<br />
 
+<button onclick="Clear()" style="margin-top:1em;">Clear</button>
 
 {% endblock %}
