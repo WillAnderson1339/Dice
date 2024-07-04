@@ -9,6 +9,7 @@ class Dice(models.Model):
     def __str__(self):
         return self.name
 
+
 class DiceFaces(models.Model):
     dice = models.ForeignKey(Dice, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)

@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %} DB Test Page 1 {% endblock %}
+{% block content %}
+<body style="background-color:LightGray;">
+
+{% load static %}
+<script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/dice_db_page_1_utils.js' %}"></script>
+
+<h1>Dice</h1>
+<ul>
+    {% for die in Dice %}
+    <li>
+        {{ die.name }} (id = {{ die.id }})
+    </li>
+    {% endfor %}
+</ul>
+
+<br />
+<label for="dice_id">Id:</label>
+<input type="number" id="dice_id" name="dice-id" value="3" size = "3" min = "0" max = "20" style="width: 3em"><br><br>
+
+<button onclick="GetDiceInfo()">Dice Info</button>
+
+<div id="diceInfoId" hidden>
+    <br />
+    <h2 id="diceNameId">dice name</h2>
+    <ul id="diceFacesId">
+    </ul>
+</div>
+
+</body>
+{% endblock %}

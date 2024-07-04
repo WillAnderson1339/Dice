@@ -7,5 +7,6 @@ urlpatterns = [
     path("about", views.page_router, name="about"),
     path("roll_1", views.page_router, name="roll_1"),
     path("roll_2", views.page_router, name="roll_1"),
+    path("dice_db_page_1", views.page_router, name="dice_db_page_1"),
     path("getDiceImages", views.get_dice_images, name="roll_1")
 ]
