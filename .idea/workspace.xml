@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="Initial implementation of dice images">
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="First implementation of the DB Test Page 1">
+      <change afterPath="$PROJECT_DIR$/dice/DiceApp/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_1_utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/rolling_test_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/rolling_test_1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/dice/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/dice/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/dice/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/dice/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,22 +24,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2iTnZnF6ezvaTIR7fNug0JrsMDP" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Dice Example" />
@@ -97,7 +104,47 @@
       <option name="project" value="LOCAL" />
       <updated>1719530327684</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Dice rolling test 1 pretty good - almost done MVP">
+      <option name="closed" value="true" />
+      <created>1719946312633</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1719946312633</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Beginning of creating Test 2 with the dynamic dice image loading">
+      <option name="closed" value="true" />
+      <created>1719954687279</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1719954687280</updated>
+    </task>
+    <task id="LOCAL-00006" summary="set up the Test 2 javascript to make the get call. Next step is to imlement the python get call...">
+      <option name="closed" value="true" />
+      <created>1719962384364</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1719962384364</updated>
+    </task>
+    <task id="LOCAL-00007" summary="First implementation of the DB">
+      <option name="closed" value="true" />
+      <created>1720051261598</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1720051261599</updated>
+    </task>
+    <task id="LOCAL-00008" summary="First implementation of the DB Test Page 1">
+      <option name="closed" value="true" />
+      <created>1720134081946</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1720134081946</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -114,7 +161,12 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial project commit" />
     <MESSAGE value="Initial implementation of dice images" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial implementation of dice images" />
+    <MESSAGE value="Dice rolling test 1 pretty good - almost done MVP" />
+    <MESSAGE value="Beginning of creating Test 2 with the dynamic dice image loading" />
+    <MESSAGE value="set up the Test 2 javascript to make the get call. Next step is to imlement the python get call..." />
+    <MESSAGE value="First implementation of the DB" />
+    <MESSAGE value="First implementation of the DB Test Page 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="First implementation of the DB Test Page 1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
