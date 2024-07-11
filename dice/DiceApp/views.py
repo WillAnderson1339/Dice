@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.core.serializers import serialize
 # import requests
+import json
 
 from .models import Dice
 from .serializers import DiceSerializer
@@ -118,4 +119,89 @@ def get_dice_images(request):
     status = 200
     # return HttpResponse(dice_name, status)
     return JsonResponse(dice_name, safe=False)
+
+def get_test(request):
+    print("get_test()")
+
+    print("line 1")
+
+    # test = []
+    # test.append('Hello World!')
+    # test.append('Hello Windows!')
+    #
+    # print("printing the test data:", test)
+    # data = serialize("json", test)
+    #
+    # print("printing the serialized data")
+    # print(data)
+    # print("done")
+
+    print("line 2")
+    # a Python object (dict):
+    x = {
+        "name": "John",
+        "age": 30,
+        "city": "New York"
+    }
+
+    # convert into JSON:
+    y = json.dumps(x)
+
+    # the result is a JSON string:
+    print(y)
+
+    data = y
+
+    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
+    # return HttpResponse(data, content_type="application/json")
+    return JsonResponse(data, safe=False)
+
+def get_test_list(request):
+    print("get_test_list()")
+
+    print("line 1")
+
+    # test = []
+    # test.append('Hello World!')
+    # test.append('Hello Windows!')
+    #
+    # print("printing the test data:", test)
+    # data = serialize("json", test)
+    #
+    # print("printing the serialized data")
+    # print(data)
+    # print("done")
+
+    print("line 2")
+    # a Python object (dict):
+    x1 = {
+        "name": "John",
+        "age": 30,
+        "city": "New York"
+    }
+
+    x2 = {
+        "name": "Fred",
+        "age": 22,
+        "city": "Los Angeles"
+    }
+
+    x3 = {
+        "name": "Sue",
+        "age": 26,
+        "city": "Miami"
+    }
+
+    arr = [x1, x2]
+    arr.append(x3)
+
+    # convert into JSON:
+    data = json.dumps(arr)
+
+    # the result is a JSON string:
+    print(data)
+
+    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
+    # return HttpResponse(data, content_type="application/json")
+    return JsonResponse(data, safe=False)
 
