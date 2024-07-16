@@ -8,6 +8,7 @@ import json
 from .models import Dice
 from .serializers import DiceSerializer
 
+
 # Create your views here.
 
 def page_router(request):
@@ -44,6 +45,7 @@ def get_dice_list(request):
     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
     # return HttpResponse(data, content_type="application/json")
     return JsonResponse(data, safe=False)
+
 
 def get_dice_info(request):
     print("get_dice_info()")
@@ -120,8 +122,26 @@ def get_dice_images(request):
     # return HttpResponse(dice_name, status)
     return JsonResponse(dice_name, safe=False)
 
+
 def get_test(request):
-    print("get_test()")
+    # get_type = "String"
+    get_type = request.GET.get('get_type', None)
+    print("get_test()", get_type)
+
+    if get_type == "String":
+        response = get_test_string(request)
+    elif get_type == "Object":
+        response = get_test_object(request)
+    elif get_type == "List":
+        response = get_test_list(request)
+    else:
+        response = "unknown type" + get_type
+
+    return response
+
+
+def get_test_string(request):
+    print("get_test_string()")
 
     print("line 1")
 
@@ -137,11 +157,47 @@ def get_test(request):
     # print("done")
 
     print("line 2")
+
+    # a Python object (dict):
+    x = "Hello World!"
+
+    # convert into JSON:
+    y = json.dumps(x)
+
+    # the result is a JSON string:
+    print(y)
+
+    data = y
+
+    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
+    # return HttpResponse(data, content_type="application/json")
+    return JsonResponse(data, safe=False)
+
+
+def get_test_object(request):
+    print("get_test_object()")
+
+    print("line 1")
+
+    # test = []
+    # test.append('Hello World!')
+    # test.append('Hello Windows!')
+    #
+    # print("printing the test data:", test)
+    # data = serialize("json", test)
+    #
+    # print("printing the serialized data")
+    # print(data)
+    # print("done")
+
+    fav_colours = ["red", "blue"]
+    print("line 2")
     # a Python object (dict):
     x = {
         "name": "John",
         "age": 30,
-        "city": "New York"
+        "city": "New York",
+        "fav_colours": fav_colours
     }
 
     # convert into JSON:
@@ -155,6 +211,7 @@ def get_test(request):
     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
     # return HttpResponse(data, content_type="application/json")
     return JsonResponse(data, safe=False)
+
 
 def get_test_list(request):
     print("get_test_list()")
@@ -174,22 +231,28 @@ def get_test_list(request):
 
     print("line 2")
     # a Python object (dict):
+    fav_colours = ["red", "blue"]
     x1 = {
         "name": "John",
         "age": 30,
-        "city": "New York"
+        "city": "New York",
+        "fav_colours": fav_colours
     }
 
+    fav_colours = ["cyan"]
     x2 = {
         "name": "Fred",
         "age": 22,
-        "city": "Los Angeles"
+        "city": "Los Angeles",
+        "fav_colours": fav_colours
     }
 
+    fav_colours = ["yellow", "teal", "rose"]
     x3 = {
         "name": "Sue",
         "age": 26,
-        "city": "Miami"
+        "city": "Miami",
+        "fav_colours": fav_colours
     }
 
     arr = [x1, x2]
@@ -204,4 +267,3 @@ def get_test_list(request):
     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
     # return HttpResponse(data, content_type="application/json")
     return JsonResponse(data, safe=False)
-

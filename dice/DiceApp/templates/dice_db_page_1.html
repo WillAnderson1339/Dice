@@ -7,7 +7,25 @@
 <script src="{% static 'js/dice_db_page_1_utils.js' %}"></script>
 
 <h1>Dice</h1>
-<h4>load Dice objects with Django template code</h4>
+<p>This is the DB test page - examples of GET calls and DB queries</p>
+
+<!-- Example calling GET and return value of string, object, etc -->
+<h5>Test GET HTTP call</h5>
+<input type="radio" id="string" name="get_type" value="String">
+<label for="string">String</label>
+<input type="radio" id="object" name="get_type" value="Object" checked>
+<label for="object">Object</label>
+<input type="radio" id="list" name="get_type" value="List">
+<label for="list">List</label>
+<button onclick="GetTest()" style="margin-top: 1em; margin-left: 1em">Test</button>
+<span id="Test1" style="margin-left: 2em"></span>
+<br /><br />
+<button onclick="GetTestList()" style="margin-top: 1em; margin-left: 1em">Test List</button>
+<br /><br />
+<p id="Test2" style="margin-left: 1em"></p>
+
+<!-- example loading dice list Django template code -->
+<h5>Load Dice objects with Django template code</h5>
 <ul>
     {% for die in Dice %}
     <li>
@@ -16,31 +34,24 @@
     {% endfor %}
 </ul>
 
-<h4>load Dice objects  with GET HTTP call</h4>
-<button onclick="GetDiceList()">Dice List</button>
+<!-- example loading dice list with a GET call -->
+<h5>Load Dice objects  with GET HTTP call</h5>
+<button onclick="GetDiceList()" style="margin-left: 1em">Dice List</button>
 <br /><br />
 <ul id="list2"></ul>
 
-<h4>load Info with GET HTTP call</h4>
-<label for="dice_id">Id:</label>
+<!-- Load with GET call -->
+<h5>Load Dice Info with GET HTTP call</h5>
+<label for="dice_id" style="margin-left: 1em">Id:</label>
 <input type="number" id="dice_id" name="dice-id" value="3" size = "3" min = "0" max = "20" style="width: 3em">
-
 <button onclick="GetDiceInfo()" style="margin-left: 1em">Dice Info</button>
 <button onclick="GetDice()" style="margin-left: 1em">Dice</button>
-
-<div id="diceInfoId" hidden>
-    <br />
-    <h5 id="diceNameId">dice name</h5>
+<br /><br />
+<div id="diceInfoId" style="margin-left: 1em" hidden>
+    <h6 id="diceNameId">dice name</h6>
     <ul id="diceFacesId">
     </ul>
 </div>
 
-<h4>Test GET HTTP call</h4>
-<button onclick="GetTest()" style="margin-top: 1em">Test</button>
-<br /><br />
-<p id="Test1"></p>
-<button onclick="GetTestList()" style="margin-top: 1em">Test List</button>
-<br /><br />
-<p id="Test2"></p>
 </body>
 {% endblock %}

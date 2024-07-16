@@ -12,6 +12,8 @@ urlpatterns = [
     path("getDiceInfo", views.get_dice_info, name="getDiceInfo"),
     path("getDiceImages", views.get_dice_images, name="getDiceImages"),
     path('getDice/<int:dice_id>/', views.get_dice, name='getDice'),
+    path("getTestString", views.get_test_string, name="getTestString"),
+    path("getTestObject", views.get_test_object, name="getTestObject"),
     path("getTestList", views.get_test_list, name="getTestList"),
     path("getTest", views.get_test, name="getTest"),
 ]
