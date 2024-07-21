@@ -61,15 +61,12 @@ function GetTest() {
 }
 
 function GetTestCallback(data, status) {
-    console.log("GetTestCallback() !1");
+    console.log("GetTestCallback() !4");
 
 //    console.log("data:", data);
 //    console.log("Status:", status);
 
     return_val = JSON.parse(data);
-
-    if (Array.isArray(return_val) == true) {
-    }
 
     if (typeof return_val == "string") {
         console.log("Serialized data (string):", return_val);
@@ -98,8 +95,22 @@ function GetTestCallback(data, status) {
             display_string += ")";
         }
     }
+    // NOTE: typeof will return object for a standard python object and a class object
     else if (typeof return_val == "object") {
         console.log("Serialized data (object):", return_val);
+
+        // the test code has the city in the address object if this a class object was serialized
+        // typeof return_val.address will be "undefined" when the object is a standard python object
+        // if (typeof return_val.address === "object") {
+        // alternate javascript is to use the if in technique
+        // if ("address" in return_val) {
+        // alternate javascript is to check if the property is undefined
+        //if (return_val.city === undefined) {
+        // alternate javascript is to use the hasOwnProperty method
+        if (return_val.hasOwnProperty("city") == false) {
+            // set the city value of return_val from the city field of the return_val.address object
+            return_val.city = return_val.address.city;
+        }
 
         display_string = return_val.name + " " + return_val.age + " " + return_val.city;
         display_string += " (";

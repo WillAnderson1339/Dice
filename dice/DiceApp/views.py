@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.core.serializers import serialize
+from json import JSONEncoder
 # import requests
 import json
 
@@ -124,7 +125,19 @@ def get_dice_images(request):
 
 
 def get_test(request):
-    # get_type = "String"
+    # access all query params as a dictionary like this: parameters = request.GET.dict() or parameters = request.GET
+    # access all query params as a list of key-value pairs like this: parameters = request.GET.items()
+    # to build URL strings with parameters (to call a different URL from a python script or handler) use reverse:
+    #   from django.urls import reverse
+    #   url = reverse('search') + '?query=django&page=1'
+    #   response = requests.get(url)
+    #   if response.status_code == 200:
+    #     data = response.json()
+    #     return HttpResponse(data)
+    #   else:
+    #     return HttpResponse("Error retrieving data")
+    # documentation on the Request and Response objects: https://docs.djangoproject.com/en/5.0/ref/request-response/
+
     get_type = request.GET.get('get_type', None)
     print("get_test()", get_type)
 
@@ -132,6 +145,8 @@ def get_test(request):
         response = get_test_string(request)
     elif get_type == "Object":
         response = get_test_object(request)
+    elif get_type == "Class":
+        response = get_test_class(request)
     elif get_type == "List":
         response = get_test_list(request)
     else:
@@ -210,6 +225,52 @@ def get_test_object(request):
 
     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
     # return HttpResponse(data, content_type="application/json")
+    return JsonResponse(data, safe=False)
+
+
+class Employee:
+    def __init__(self, name, age, salary, fav_colours, address):
+        self.name = name
+        self.age = age
+        self.salary = salary
+        self.fav_colours = fav_colours
+        self.address = address
+
+
+class Address:
+    def __init__(self, city, street, pin):
+        self.city = city
+        self.street = street
+        self.pin = pin
+
+
+# subclass JSONEncoder
+class EmployeeEncoder(JSONEncoder):
+        def default(self, o):
+            return o.__dict__
+
+
+def get_test_class(request):
+    print("get_test_class()")
+
+    address = Address("Alpharetta", "7258 Spring Street", "30004")
+    fav_colours = ["orange", "grey"]
+    employee = Employee("Herb", 38, 9000, fav_colours, address)
+
+    # print("Printing to check how it will look like")
+    # print(EmployeeEncoder().encode(employee))
+
+    # print("Encode Employee Object into JSON formatted Data using custom JSONEncoder")
+    employeeJSONData = json.dumps(employee, indent=4, cls=EmployeeEncoder)
+    # print(employeeJSONData)
+
+    # Let's load it using the load method to check if we can decode it or not.
+    # print("Decode JSON formatted Data")
+    # employeeJSON = json.loads(employeeJSONData)
+    # print(employeeJSON)
+
+    data = employeeJSONData
+
     return JsonResponse(data, safe=False)
 
 

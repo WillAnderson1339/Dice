@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="Cleaned up code and added an example testing GET for get_test() and get_test_list() with JSON encoding.">
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="Reorganized code and added array to GET return value">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -155,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720724629726</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Reorganized code and added array to GET return value">
+      <option name="closed" value="true" />
+      <created>1721171861683</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1721171861683</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -179,7 +186,8 @@
     <MESSAGE value="First implementation of the DB Test Page 1" />
     <MESSAGE value="first iteration of the JS and Pythond for the GET calls for get_dice_list, get_dice and get_dice_info" />
     <MESSAGE value="Cleaned up code and added an example testing GET for get_test() and get_test_list() with JSON encoding." />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaned up code and added an example testing GET for get_test() and get_test_list() with JSON encoding." />
+    <MESSAGE value="Reorganized code and added array to GET return value" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reorganized code and added array to GET return value" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
