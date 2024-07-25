@@ -4,16 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="Reorganized code and added array to GET return value">
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="added the python class object to the GET call using the custom Encoder method">
+      <change afterPath="$PROJECT_DIR$/dice/DiceApp/rest_api_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rest_1_utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dice/DiceApp/templates/rest_test_1.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -27,13 +40,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Dice Example" />
@@ -162,7 +176,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721171861683</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="added the python class object to the GET call using the custom Encoder method">
+      <option name="closed" value="true" />
+      <created>1721525708469</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1721525708469</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -187,7 +209,8 @@
     <MESSAGE value="first iteration of the JS and Pythond for the GET calls for get_dice_list, get_dice and get_dice_info" />
     <MESSAGE value="Cleaned up code and added an example testing GET for get_test() and get_test_list() with JSON encoding." />
     <MESSAGE value="Reorganized code and added array to GET return value" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reorganized code and added array to GET return value" />
+    <MESSAGE value="added the python class object to the GET call using the custom Encoder method" />
+    <option name="LAST_COMMIT_MESSAGE" value="added the python class object to the GET call using the custom Encoder method" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -196,6 +219,10 @@
           <url>file://$PROJECT_DIR$/main.py</url>
           <line>8</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dice/DiceApp/urls.py</url>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

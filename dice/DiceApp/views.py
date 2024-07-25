@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import get_object_or_404
 from django.core.serializers import serialize
 from json import JSONEncoder
@@ -8,6 +9,10 @@ import json
 
 from .models import Dice
 from .serializers import DiceSerializer
+
+from .rest_api_test import *
+
+# string_value = "Hello World!!"
 
 
 # Create your views here.
@@ -24,6 +29,8 @@ def page_router(request):
         return render(request, "rolling_test_1.html")
     elif "roll_2" in request.path.lower():
         return render(request, "rolling_test_2.html")
+    elif "rest_test_1" in request.path.lower():
+        return render(request, "rest_test_1.html")
     elif "dice_db_page_1" in request.path.lower():
         items = Dice.objects.all()
         return render(request, "dice_db_page_1.html", {"Dice": items})
@@ -31,6 +38,7 @@ def page_router(request):
         return HttpResponse("unknown page request " + request.path)
 
 
+"""GET call to return Dice objects"""
 def get_dice_list(request):
     qs = Dice.objects.all()
     print("printing the query set")
@@ -123,208 +131,238 @@ def get_dice_images(request):
     # return HttpResponse(dice_name, status)
     return JsonResponse(dice_name, safe=False)
 
+#
+# def get_test(request):
+#     # access all query params as a dictionary like this: parameters = request.GET.dict() or parameters = request.GET
+#     # access all query params as a list of key-value pairs like this: parameters = request.GET.items()
+#     # to build URL strings with parameters (to call a different URL from a python script or handler) use reverse:
+#     #   from django.urls import reverse
+#     #   url = reverse('search') + '?query=django&page=1'
+#     #   response = requests.get(url)
+#     #   if response.status_code == 200:
+#     #     data = response.json()
+#     #     return HttpResponse(data)
+#     #   else:
+#     #     return HttpResponse("Error retrieving data")
+#     # documentation on the Request and Response objects: https://docs.djangoproject.com/en/5.0/ref/request-response/
+#
+#     get_type = request.GET.get('get_type', "String")
+#     print("get_test()", get_type)
+#
+#     if get_type == "String":
+#         response = get_test_string(request)
+#     elif get_type == "Object":
+#         response = get_test_object(request)
+#     elif get_type == "Class":
+#         response = get_test_class(request)
+#     elif get_type == "List":
+#         response = get_test_list(request)
+#     else:
+#         response = "unknown type" + get_type
+#
+#     return response
+#
+#
+# def get_test_string(request):
+#     print("get_test_string()")
+#
+#     data = json.dumps(string_value)
+#
+#     return JsonResponse(data, safe=False)
 
-def get_test(request):
-    # access all query params as a dictionary like this: parameters = request.GET.dict() or parameters = request.GET
-    # access all query params as a list of key-value pairs like this: parameters = request.GET.items()
-    # to build URL strings with parameters (to call a different URL from a python script or handler) use reverse:
-    #   from django.urls import reverse
-    #   url = reverse('search') + '?query=django&page=1'
-    #   response = requests.get(url)
-    #   if response.status_code == 200:
-    #     data = response.json()
-    #     return HttpResponse(data)
-    #   else:
-    #     return HttpResponse("Error retrieving data")
-    # documentation on the Request and Response objects: https://docs.djangoproject.com/en/5.0/ref/request-response/
+#
+# def get_test_object(request):
+#     print("get_test_object()")
+#
+#     print("line 1")
+#
+#     # test = []
+#     # test.append('Hello World!')
+#     # test.append('Hello Windows!')
+#     #
+#     # print("printing the test data:", test)
+#     # data = serialize("json", test)
+#     #
+#     # print("printing the serialized data")
+#     # print(data)
+#     # print("done")
+#
+#     fav_colours = ["red", "blue"]
+#     print("line 2")
+#     # a Python object (dict):
+#     x = {
+#         "name": "John",
+#         "age": 30,
+#         "city": "New York",
+#         "fav_colours": fav_colours
+#     }
+#
+#     # convert into JSON:
+#     y = json.dumps(x)
+#
+#     # the result is a JSON string:
+#     print(y)
+#
+#     data = y
+#
+#     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
+#     # return HttpResponse(data, content_type="application/json")
+#     return JsonResponse(data, safe=False)
+#
+#
+# class Employee:
+#     def __init__(self, name, age, salary, fav_colours, address):
+#         self.name = name
+#         self.age = age
+#         self.salary = salary
+#         self.fav_colours = fav_colours
+#         self.address = address
+#
+#
+# class Address:
+#     def __init__(self, city, street, pin):
+#         self.city = city
+#         self.street = street
+#         self.pin = pin
+#
+#
+# # subclass JSONEncoder
+# class EmployeeEncoder(JSONEncoder):
+#         def default(self, o):
+#             return o.__dict__
+#
+#
+# def get_test_class(request):
+#     print("get_test_class()")
+#
+#     address = Address("Alpharetta", "7258 Spring Street", "30004")
+#     fav_colours = ["orange", "grey"]
+#     employee = Employee("Herb", 38, 9000, fav_colours, address)
+#
+#     # print("Printing to check how it will look like")
+#     # print(EmployeeEncoder().encode(employee))
+#
+#     # print("Encode Employee Object into JSON formatted Data using custom JSONEncoder")
+#     employeeJSONData = json.dumps(employee, indent=4, cls=EmployeeEncoder)
+#     # print(employeeJSONData)
+#
+#     # Let's load it using the load method to check if we can decode it or not.
+#     # print("Decode JSON formatted Data")
+#     # employeeJSON = json.loads(employeeJSONData)
+#     # print(employeeJSON)
+#
+#     data = employeeJSONData
+#
+#     return JsonResponse(data, safe=False)
+#
 
-    get_type = request.GET.get('get_type', None)
-    print("get_test()", get_type)
-
-    if get_type == "String":
-        response = get_test_string(request)
-    elif get_type == "Object":
-        response = get_test_object(request)
-    elif get_type == "Class":
-        response = get_test_class(request)
-    elif get_type == "List":
-        response = get_test_list(request)
-    else:
-        response = "unknown type" + get_type
-
-    return response
-
-
-def get_test_string(request):
-    print("get_test_string()")
-
-    print("line 1")
-
-    # test = []
-    # test.append('Hello World!')
-    # test.append('Hello Windows!')
-    #
-    # print("printing the test data:", test)
-    # data = serialize("json", test)
-    #
-    # print("printing the serialized data")
-    # print(data)
-    # print("done")
-
-    print("line 2")
-
-    # a Python object (dict):
-    x = "Hello World!"
-
-    # convert into JSON:
-    y = json.dumps(x)
-
-    # the result is a JSON string:
-    print(y)
-
-    data = y
-
-    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
-    # return HttpResponse(data, content_type="application/json")
-    return JsonResponse(data, safe=False)
-
-
-def get_test_object(request):
-    print("get_test_object()")
-
-    print("line 1")
-
-    # test = []
-    # test.append('Hello World!')
-    # test.append('Hello Windows!')
-    #
-    # print("printing the test data:", test)
-    # data = serialize("json", test)
-    #
-    # print("printing the serialized data")
-    # print(data)
-    # print("done")
-
-    fav_colours = ["red", "blue"]
-    print("line 2")
-    # a Python object (dict):
-    x = {
-        "name": "John",
-        "age": 30,
-        "city": "New York",
-        "fav_colours": fav_colours
-    }
-
-    # convert into JSON:
-    y = json.dumps(x)
-
-    # the result is a JSON string:
-    print(y)
-
-    data = y
-
-    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
-    # return HttpResponse(data, content_type="application/json")
-    return JsonResponse(data, safe=False)
-
-
-class Employee:
-    def __init__(self, name, age, salary, fav_colours, address):
-        self.name = name
-        self.age = age
-        self.salary = salary
-        self.fav_colours = fav_colours
-        self.address = address
-
-
-class Address:
-    def __init__(self, city, street, pin):
-        self.city = city
-        self.street = street
-        self.pin = pin
-
-
-# subclass JSONEncoder
-class EmployeeEncoder(JSONEncoder):
-        def default(self, o):
-            return o.__dict__
-
-
-def get_test_class(request):
-    print("get_test_class()")
-
-    address = Address("Alpharetta", "7258 Spring Street", "30004")
-    fav_colours = ["orange", "grey"]
-    employee = Employee("Herb", 38, 9000, fav_colours, address)
-
-    # print("Printing to check how it will look like")
-    # print(EmployeeEncoder().encode(employee))
-
-    # print("Encode Employee Object into JSON formatted Data using custom JSONEncoder")
-    employeeJSONData = json.dumps(employee, indent=4, cls=EmployeeEncoder)
-    # print(employeeJSONData)
-
-    # Let's load it using the load method to check if we can decode it or not.
-    # print("Decode JSON formatted Data")
-    # employeeJSON = json.loads(employeeJSONData)
-    # print(employeeJSON)
-
-    data = employeeJSONData
-
-    return JsonResponse(data, safe=False)
-
-
-def get_test_list(request):
-    print("get_test_list()")
-
-    print("line 1")
-
-    # test = []
-    # test.append('Hello World!')
-    # test.append('Hello Windows!')
-    #
-    # print("printing the test data:", test)
-    # data = serialize("json", test)
-    #
-    # print("printing the serialized data")
-    # print(data)
-    # print("done")
-
-    print("line 2")
-    # a Python object (dict):
-    fav_colours = ["red", "blue"]
-    x1 = {
-        "name": "John",
-        "age": 30,
-        "city": "New York",
-        "fav_colours": fav_colours
-    }
-
-    fav_colours = ["cyan"]
-    x2 = {
-        "name": "Fred",
-        "age": 22,
-        "city": "Los Angeles",
-        "fav_colours": fav_colours
-    }
-
-    fav_colours = ["yellow", "teal", "rose"]
-    x3 = {
-        "name": "Sue",
-        "age": 26,
-        "city": "Miami",
-        "fav_colours": fav_colours
-    }
-
-    arr = [x1, x2]
-    arr.append(x3)
-
-    # convert into JSON:
-    data = json.dumps(arr)
-
-    # the result is a JSON string:
-    print(data)
-
-    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
-    # return HttpResponse(data, content_type="application/json")
-    return JsonResponse(data, safe=False)
+# def get_test_list(request):
+#     print("get_test_list()")
+#
+#     print("line 1")
+#
+#     # test = []
+#     # test.append('Hello World!')
+#     # test.append('Hello Windows!')
+#     #
+#     # print("printing the test data:", test)
+#     # data = serialize("json", test)
+#     #
+#     # print("printing the serialized data")
+#     # print(data)
+#     # print("done")
+#
+#     print("line 2")
+#     # a Python object (dict):
+#     fav_colours = ["red", "blue"]
+#     x1 = {
+#         "name": "John",
+#         "age": 30,
+#         "city": "New York",
+#         "fav_colours": fav_colours
+#     }
+#
+#     fav_colours = ["cyan"]
+#     x2 = {
+#         "name": "Fred",
+#         "age": 22,
+#         "city": "Los Angeles",
+#         "fav_colours": fav_colours
+#     }
+#
+#     fav_colours = ["yellow", "teal", "rose"]
+#     x3 = {
+#         "name": "Sue",
+#         "age": 26,
+#         "city": "Miami",
+#         "fav_colours": fav_colours
+#     }
+#
+#     arr = [x1, x2]
+#     arr.append(x3)
+#
+#     # convert into JSON:
+#     data = json.dumps(arr)
+#
+#     # the result is a JSON string:
+#     print(data)
+#
+#     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
+#     # return HttpResponse(data, content_type="application/json")
+#     return JsonResponse(data, safe=False)
+#
+#
+# def post_test(request):
+#     post_value = request.POST.get('value', None)
+#     print("post_test()", post_value)
+#
+#     data_string = "the posted value was: " + post_value
+#     data = json.dumps(data_string)
+#
+#     return JsonResponse(data, safe=False)
+#
+#
+# def rest_api_test(request):
+#     # post_value = request.POST.get('value', None)
+#     print("rest_api_test()")
+#     print("the request object:")
+#     print(request)
+#     print("done...")
+#     print("request method = ", request.method)
+#
+#     if request.method == "GET":
+#         response = get_test(request)
+#         return response
+#
+#     elif request.method == "POST":
+#         response = post_test(request)
+#         return response
+#
+#     elif request.method == "PUT":
+#         print("API method = ", request.method)
+#         data_string = "API method = " + request.method
+#         data = json.dumps(data_string)
+#
+#         return JsonResponse(data, safe=False)
+#
+#     else:
+#         print("unexpected API method = ", request.method)
+#         data_string = "unexpected API method = " + request.method
+#         data = json.dumps(data_string)
+#
+#         return JsonResponse(data, safe=False)
+#
+#     # get the parameter
+#     # post_value = request.POST["value"]
+#     # try:
+#     #     post_value = request.POST["value"]
+#     # except (KeyError, Choice.DoesNotExist):
+#     #     print("key named 'value' not found in URL")
+#     #     data_string = "key named 'value' not found in URL"
+#     # else:
+#     #     print("key named 'value' found with value of: ", post_value)
+#     #     data_string = "the posted value was: " + post_value
+#
+#     # data = json.dumps(data_string)
+#
+#     # return JsonResponse(data, safe=False)

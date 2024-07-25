@@ -37,7 +37,7 @@ function GetDiceListCallback(data, status) {
 //    console.log(dice_list);
 }
 
-
+/*
 function GetTest() {
     console.log("GetTest() !1");
 
@@ -169,6 +169,7 @@ function GetTestListCallback(data, status) {
     element = document.getElementById("Test2");
     element.innerHTML = testList[0].name + " " + testList[0].age + " " + testList[0].city;
 }
+*/
 
 // example calling GET with a parameter
 function GetDiceInfo() {

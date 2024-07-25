@@ -1,0 +1,77 @@
+{% extends "base.html" %} {% block title %} REST Test Page 1 {% endblock %}
+{% block content %}
+<body style="background-color:IndianRed;">
+
+{% load static %}
+<script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/rest_1_utils.js' %}"></script>
+
+<h1>REST</h1>
+<p>This is the REST test page - examples of GET, POST, PUT and DELETE calls </p>
+
+<!-- Example calling GET and return value of string, object, etc -->
+<h5>Test GET HTTP call</h5>
+<input type="radio" id="string" name="get_type" value="String">
+<label for="string">String</label>
+<input type="radio" id="object" name="get_type" value="Object" checked>
+<label for="object">Object</label>
+<input type="radio" id="class" name="get_type" value="Class">
+<label for="class">Class</label>
+<input type="radio" id="list" name="get_type" value="List">
+<label for="list">List</label>
+<button onclick="GetTest()" style="margin-top: 1em; margin-left: 1em">Test</button>
+<span id="Test1" style="margin-left: 2em"></span>
+<br /><br />
+
+<!-- Example calling GET and return value of string, object, etc -->
+<h5>Test POST HTTP call</h5>
+
+<!--
+<form method="post">
+-->
+
+{% csrf_token %}
+<label for="post_value" style="margin-left: 1em">Post Value:</label>
+<input type="text" id="post_value" name="post_value" value="Smurf" size = "10" style="width: 10em">
+<button onclick="PostTest()" style="margin-top: 1em; margin-left: 1em">Post Value</button>
+<span id="PosTest1" style="margin-left: 2em"></span>
+<br /><br />
+<p id="Test2" style="margin-left: 1em"></p>
+<p>---------</p>
+
+<!-- Example calling the single REST API endpoint for each of the GET, POST, PUT and DELETE -->
+<input type="radio" id="string2" name="get_type2" value="String">
+<label for="string2">String</label>
+<input type="radio" id="object2" name="get_type2" value="Object" checked>
+<label for="object2">Object</label>
+<input type="radio" id="class2" name="get_type2" value="Class">
+<label for="class2">Class</label>
+<input type="radio" id="list2" name="get_type2" value="List">
+<label for="list2">List</label>
+
+<button onclick="RESTAPITest('GET')" style="margin-top: 1em; margin-left: 1em">Get</button>
+<br />
+<span style="margin-left: 1em">New Value:</span>
+<input type="text" id="post_value_name" name="post_value_name" value="Carrie" style="width: 7em;margin-left: 1em">
+<input type="number" id="post_value_age" name="post_value_age" value="31" size = "4" min = "20" max = "39" style="width: 4em;margin-left: 1em">
+<input type="text" id="post_value_city" name="post_value_city" value="Austin" size = "8" style="width: 8em;margin-left: 1em">
+<button onclick="RESTAPITest('POST')" style="margin-top: 1em; margin-left: 1em">Post Value</button>
+<br />
+<label for="put_ID_id" style="margin-left: 1em">Update ID:</label>
+<input type="text" id="put_ID_id" name="put_ID" value="101" size = "4" style="width: 4em">
+<label for="put_value_id" style="margin-left: 1em">Update Value:</label>
+<input type="text" id="put_value_id" name="put_value" value="apple" size = "10" style="width: 10em">
+<button onclick="RESTAPITest('PUT')" style="margin-top: 1em; margin-left: 1em">Put Value</button>
+<br />
+<label for="delete_ID_id" style="margin-left: 1em">Update ID:</label>
+<input type="number" id="delete_ID_id" name="delete_ID" value="101" size = "4" min = "1" max = "999" style="width: 4em">
+<button onclick="RESTAPITest('DELETE')" style="margin-top: 1em; margin-left: 1em">Delete Value</button>
+<br /><br />
+<p id="update_response_id" style="margin-left: 1em"></p>
+
+<!--
+</form>
+-->
+
+</body>
+{% endblock %}
