@@ -23,7 +23,7 @@ function GetTest() {
 }
 
 function GetTestCallback(data, status) {
-    console.log("GetTestCallback() !4");
+    console.log("GetTestCallback() !1");
 
 //    console.log("data:", data);
 //    console.log("Status:", status);
@@ -31,16 +31,16 @@ function GetTestCallback(data, status) {
     return_val = JSON.parse(data);
 
     if (typeof return_val == "string") {
-        console.log("Serialized data (string):", return_val);
+//        console.log("Serialized data (string):", return_val);
 
         display_string = return_val;
     }
     // NOTE: typeof will return object for the array return type so check for isArray first
     else if (Array.isArray(return_val) == true) {
-        console.log("Serialized data (list):", return_val);
+//        console.log("Serialized data (list):", return_val);
         display_string = "";
         for (item of return_val) {
-            console.log("item:", item);
+//            console.log("item:", item);
             if (display_string.trim().length > 0) {
                 display_string += ", ";
             }
@@ -59,7 +59,7 @@ function GetTestCallback(data, status) {
     }
     // NOTE: typeof will return object for a standard python object and a class object
     else if (typeof return_val == "object") {
-        console.log("Serialized data (object):", return_val);
+//        console.log("Serialized data (object):", return_val);
 
         // the test code has the city in the address object if this a class object was serialized
         // typeof return_val.address will be "undefined" when the object is a standard python object
@@ -91,8 +91,11 @@ function GetTestCallback(data, status) {
         display_string = "unknown return type: " + typeof return_val;
     }
 
-    element = document.getElementById("Test1");
+    element = document.getElementById("ResponseData");
     element.innerHTML = display_string;
+
+    // clear the text from the response (b/c response text being shown in the ResponseData tag)
+    $('#ResponseText').text("");
 }
 
 /*
@@ -156,7 +159,26 @@ function PostTestCallback(data, status) {
     return_val = JSON.parse(data);
     console.log("return_val = ", return_val);
 
-    $('#Test2').text(return_val);
+    $('#ResponseText').text(return_val);
+}
+
+function PatchTestCallback(data, status) {
+    console.log("PatchTestCallback() !1");
+
+    console.log("data:", data);
+    console.log("Status:", status);
+
+    return_val = JSON.parse(data);
+    console.log("return_val = ", return_val);
+
+    // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
+    if (typeof return_val == 'object') {
+        display_string = "updated item: [" + return_val.id_value + "] " + return_val.name
+    }
+    else {
+        display_string = return_val;
+    }
+    $('#ResponseText').text(display_string);
 }
 
 function PutTestCallback(data, status) {
@@ -170,7 +192,7 @@ function PutTestCallback(data, status) {
 
     // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
     if (typeof return_val == 'object') {
-        display_string = "updated item: [" + return_val.id_value + "] " + return_val.name
+        display_string = "replaced item: [" + return_val.id_value + "] " + return_val.name
     }
     else {
         display_string = return_val;
@@ -195,7 +217,7 @@ function DeleteTestCallback(data, status) {
     else {
         display_string = return_val;
     }
-    $('#Test2').text(display_string);
+    $('#ResponseText').text(display_string);
 }
 
 function RESTAPITest(type) {
@@ -241,6 +263,34 @@ function RESTAPITest(type) {
 //            data:{value: post_value, csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()},
             data:{name: post_value_name, age: post_value_age, city: post_value_city, csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()},
             success: PostTestCallback,
+            error: function(data, status) {console.log("ERROR calling url:", url);}
+        });
+        break;
+
+      case "PATCH":
+        console.log("PUT!!!");
+        // note even when an int is passed to the ajax call it will be a string on the server side of the call
+        put_ID = $('#put_ID_id').val();
+        put_name = $('#put_name_id').val();
+        put_age = $('#put_age_id').val();
+        console.log("put_ID = ", put_ID, " put_name = ", put_name, "put_age = ", put_age, " type = (", typeof put_age, ")");
+
+        // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
+        // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
+        url = "RESTAPITest";
+        console.log("url to call:", url);
+
+        csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+        $.ajax({
+            type: 'PATCH',
+            url: url,
+            dataType: 'json',
+            contentType: 'application/json',
+            data:{id_value: put_ID, name: put_name, age: put_age, csrfmiddlewaretoken: csrftoken},
+            headers: {'X-CSRFToken': csrftoken},
+            mode: 'same-origin', // Do not send CSRF token to another domain.
+            success: PatchTestCallback,
             error: function(data, status) {console.log("ERROR calling url:", url);}
         });
         break;

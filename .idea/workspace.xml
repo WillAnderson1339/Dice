@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="working on POST, PUT and DELETE">
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="PUT and DELETE are now working">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/rest_api_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/rest_api_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/rest_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rest_1_utils.js" afterDir="false" />
@@ -188,7 +188,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721941116303</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="PUT and DELETE are now working">
+      <option name="closed" value="true" />
+      <created>1722213828079</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1722213828079</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -215,7 +223,8 @@
     <MESSAGE value="Reorganized code and added array to GET return value" />
     <MESSAGE value="added the python class object to the GET call using the custom Encoder method" />
     <MESSAGE value="working on POST, PUT and DELETE" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on POST, PUT and DELETE" />
+    <MESSAGE value="PUT and DELETE are now working" />
+    <option name="LAST_COMMIT_MESSAGE" value="PUT and DELETE are now working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

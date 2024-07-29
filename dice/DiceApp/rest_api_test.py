@@ -61,7 +61,7 @@ def get_index_of_id_value(id_value):
 
     # if list is empty return -1
     if len(list_of_people) == 0:
-        print("list is empty returning index of", -1)
+        # print("list is empty returning index of", -1)
         return -1
 
     index = 0
@@ -73,10 +73,10 @@ def get_index_of_id_value(id_value):
         index += 1
 
     if index == len(list_of_people):
-        print("ID", index, "not found, returning ", -1)
+        # print("ID", index, "not found, returning ", -1)
         return -1
     else:
-        print("returning index of ", index)
+        # print("returning index of ", index)
         return index
 
 
@@ -128,8 +128,6 @@ def get_test_string(request):
 def get_test_object(request):
     print("get_test_object()")
 
-    print("line 1")
-
     if request.method != "GET":
         print("unexpected API method = ", request.method)
         data_string = "unexpected API method = " + request.method
@@ -137,7 +135,6 @@ def get_test_object(request):
         return JsonResponse(data, safe=False)
 
     fav_colours = ["red", "blue"]
-    print("line 2")
     # a Python object (dict):
     x = {
         "id_value": 20,
@@ -151,7 +148,7 @@ def get_test_object(request):
     y = json.dumps(x)
 
     # the result is a JSON string:
-    print(y)
+    # print(y)
 
     data = y
 
@@ -236,7 +233,7 @@ def init_list_values():
     # now show appending an object
     list_of_people.append(x3)
 
-    print("list count = ", len(list_of_people))
+    # print("list count = ", len(list_of_people))
 
     return
 
@@ -277,7 +274,7 @@ def post_test(request):
     post_value_name = request.POST.get('name', "Loki")
     post_value_age = request.POST.get('age', 99)
     post_value_city = request.POST.get('city', "Hades")
-    print("post_test()", post_value_name, " ", post_value_age, " ", post_value_city)
+    # print("post_test()", post_value_name, " ", post_value_age, " ", post_value_city)
 
     # print("typeof age = ", type(post_value_age))
 
@@ -297,6 +294,64 @@ def post_test(request):
     list_of_people.append(item)
 
     data_string = "the POST value was: " + post_value_name + age_string + post_value_city
+    data = json.dumps(data_string)
+
+    return JsonResponse(data, safe=False)
+
+
+
+def patch_test(request):
+    print("patch_test()")
+
+    global list_of_people
+
+    data_string = "API method = " + request.method
+    data = json.dumps(data_string)
+
+    # Parse the query string into a dictionary
+    body = request.body.decode('utf-8')
+    # print(body)
+
+    # print("parsed data:")
+    parsed_data = urllib.parse.parse_qs(body)
+    # print(parsed_data)
+
+    # convert the parsed data to an object
+    # returns a dictionary with lists as values, we'll extract the single values
+    query_args = {k: v[0] for k, v in parsed_data.items()}
+
+    # there must be a better way of safely getting the params and providing error if query params are missing
+    put_value_id = 99
+    put_value_name = ""
+    put_value_age = 99
+    if 'id_value' in query_args:
+        query_args['id_value'] = int(query_args['id_value'])  # is there a better way to do this?
+        put_value_id = query_args['id_value']
+    if 'name' in query_args:
+        put_value_name = query_args['name']
+    if 'age' in query_args:
+        put_value_age = query_args['age']
+        put_value_age = int(put_value_age)
+
+    # print("params:", put_value_id, " (type =", type(put_value_id), ") ", put_value_name, " ", put_value_age, " (type =", type(put_value_age), ") ")
+
+    index = get_index_of_id_value(put_value_id)
+    if index == -1:
+        data_string = "PUT called but the requested id was not found: " + str(put_value_id)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    # print("found ID", put_value_id, " at position ", index)
+
+    # fav_colours = ["coral", "mauve"]
+    item = list_of_people[index]
+    if put_value_name != "":
+        item['name'] = put_value_name
+    if put_value_age != 99:
+        item['age'] = put_value_age
+    list_of_people[index] = item
+
+    data_string = item
     data = json.dumps(data_string)
 
     return JsonResponse(data, safe=False)
@@ -340,7 +395,7 @@ def put_test(request):
         put_value_age = query_args['age']
         put_value_age = int(put_value_age)
 
-    print("params:", put_value_id, " (type =", type(put_value_id), ") ", put_value_name, " ", put_value_age, " (type =", type(put_value_age), ") ")
+    # print("params:", put_value_id, " (type =", type(put_value_id), ") ", put_value_name, " ", put_value_age, " (type =", type(put_value_age), ") ")
 
     index = get_index_of_id_value(put_value_id)
     if index == -1:
@@ -348,7 +403,7 @@ def put_test(request):
         data = json.dumps(data_string)
         return JsonResponse(data, safe=False)
 
-    print("found ID", put_value_id, " at position ", index)
+    # print("found ID", put_value_id, " at position ", index)
 
     fav_colours = ["coral", "mauve"]
     item = {
@@ -462,6 +517,10 @@ def rest_api_test(request):
 
     elif request.method == "PUT":
         response = put_test(request)
+        return response
+
+    elif request.method == "PATCH":
+        response = patch_test(request)
         return response
 
     elif request.method == "DELETE":
