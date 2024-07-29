@@ -148,7 +148,7 @@ function PostTest() {
 }
 
 function PostTestCallback(data, status) {
-    console.log("PostTestCallback() !22");
+    console.log("PostTestCallback() !1");
 
 //    console.log("data:", data);
 //    console.log("Status:", status);
@@ -168,7 +168,14 @@ function PutTestCallback(data, status) {
     return_val = JSON.parse(data);
     console.log("return_val = ", return_val);
 
-    $('#Test2').text(return_val);
+    // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
+    if (typeof return_val == 'object') {
+        display_string = "updated item: [" + return_val.id_value + "] " + return_val.name
+    }
+    else {
+        display_string = return_val;
+    }
+    $('#Test2').text(display_string);
 }
 
 
@@ -181,7 +188,14 @@ function DeleteTestCallback(data, status) {
     return_val = JSON.parse(data);
     console.log("return_val = ", return_val);
 
-    $('#Test2').text(return_val);
+    // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
+    if (typeof return_val == 'object') {
+        display_string = "removed item: [" + return_val.id_value + "] " + return_val.name
+    }
+    else {
+        display_string = return_val;
+    }
+    $('#Test2').text(display_string);
 }
 
 function RESTAPITest(type) {
@@ -216,7 +230,7 @@ function RESTAPITest(type) {
         console.log("name = ", post_value_name, "age = ", post_value_age, "city = ", post_value_city);
 
         // url = "postTest?value=" + post_value;
-        // the value parameter will be added in the data section of the AJAX call. This is b/c I don't know how to specify
+        // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
         // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
         url = "RESTAPITest";
         console.log("url to call:", url, "data: name = ", post_value_name, "age = ", post_value_age, "city = ", post_value_city);
@@ -232,13 +246,14 @@ function RESTAPITest(type) {
         break;
 
       case "PUT":
-        console.log("PUT!");
+        console.log("PUT!!!");
+        // note even when an int is passed to the ajax call it will be a string on the server side of the call
         put_ID = $('#put_ID_id').val();
-        put_value = $('#put_value_id').val();
-        console.log("put_ID = ", put_ID, " put_val = ", put_value);
+        put_name = $('#put_name_id').val();
+        put_age = $('#put_age_id').val();
+        console.log("put_ID = ", put_ID, " put_name = ", put_name, "put_age = ", put_age, " type = (", typeof put_age, ")");
 
-        // url = "postTest?value=" + post_value;
-        // the value parameter will be added in the data section of the AJAX call. This is b/c I don't know how to specify
+        // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
         // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
         url = "RESTAPITest";
         console.log("url to call:", url);
@@ -250,7 +265,7 @@ function RESTAPITest(type) {
             url: url,
             dataType: 'json',
             contentType: 'application/json',
-            data:{ID: put_ID, value: put_value, csrfmiddlewaretoken: csrftoken},
+            data:{id_value: put_ID, name: put_name, age: put_age, csrfmiddlewaretoken: csrftoken},
             headers: {'X-CSRFToken': csrftoken},
             mode: 'same-origin', // Do not send CSRF token to another domain.
             success: PutTestCallback,

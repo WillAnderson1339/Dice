@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="added the python class object to the GET call using the custom Encoder method">
-      <change afterPath="$PROJECT_DIR$/dice/DiceApp/rest_api_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rest_1_utils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dice/DiceApp/templates/rest_test_1.html" afterDir="false" />
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="working on POST, PUT and DELETE">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/rest_api_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/rest_api_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/rest_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rest_1_utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/rest_test_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/rest_test_1.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +38,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
+    "Python.main.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main"
@@ -184,7 +180,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721525708469</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="working on POST, PUT and DELETE">
+      <option name="closed" value="true" />
+      <created>1721941116303</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1721941116303</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -210,16 +214,12 @@
     <MESSAGE value="Cleaned up code and added an example testing GET for get_test() and get_test_list() with JSON encoding." />
     <MESSAGE value="Reorganized code and added array to GET return value" />
     <MESSAGE value="added the python class object to the GET call using the custom Encoder method" />
-    <option name="LAST_COMMIT_MESSAGE" value="added the python class object to the GET call using the custom Encoder method" />
+    <MESSAGE value="working on POST, PUT and DELETE" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on POST, PUT and DELETE" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/dice/DiceApp/urls.py</url>
           <option name="timeStamp" value="2" />

@@ -55,26 +55,29 @@ def get_next_id_value():
 
 
 def get_index_of_id_value(id_value):
-    print("get_index_of_id_value()", id_value)
+    print("get_index_of_id_value() with value = ", id_value)
 
     global list_of_people
 
     # if list is empty return -1
     if len(list_of_people) == 0:
+        print("list is empty returning index of", -1)
         return -1
 
     index = 0
 
     for item in list_of_people:
         item_value = item['id_value']
-        print("comparing ", item_value, "(", type(item_value), ") and", id_value, "(", type(id_value), ")")
         if item_value == id_value:
-            print("found it! index = ", index)
             break
         index += 1
 
-    print("returning index of ", index)
-    return index
+    if index == len(list_of_people):
+        print("ID", index, "not found, returning ", -1)
+        return -1
+    else:
+        print("returning index of ", index)
+        return index
 
 
 def get_test(request):
@@ -255,7 +258,7 @@ def get_test_list(request):
     data = json.dumps(list_of_people)
 
     # the result is a JSON string:
-    print(data)
+    # print(data)
 
     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
     # return HttpResponse(data, content_type="application/json")
@@ -293,7 +296,7 @@ def post_test(request):
 
     list_of_people.append(item)
 
-    data_string = "the posted value was: " + post_value_name + age_string + post_value_city
+    data_string = "the POST value was: " + post_value_name + age_string + post_value_city
     data = json.dumps(data_string)
 
     return JsonResponse(data, safe=False)
@@ -307,6 +310,59 @@ def put_test(request):
     data_string = "API method = " + request.method
     data = json.dumps(data_string)
 
+    # put_value_id = request.POST.get('id_value', 99)
+    # put_value_name = request.POST.get('name', "Hades")
+    # put_value_age = request.POST.get('age', 40)
+    # print("params:", put_value_id, " (type =", type(put_value_id), ") ", put_value_name, " ", put_value_age, " (type =", type(put_value_age), ") ")
+
+    # Parse the query string into a dictionary
+    body = request.body.decode('utf-8')
+    # print(body)
+
+    # print("parsed data:")
+    parsed_data = urllib.parse.parse_qs(body)
+    # print(parsed_data)
+
+    # convert the parsed data to an object
+    # returns a dictionary with lists as values, we'll extract the single values
+    query_args = {k: v[0] for k, v in parsed_data.items()}
+
+    # there must be a better way of safely getting the params and providing error if query params are missing
+    put_value_id = 99
+    put_value_name = ""
+    put_value_age = 99
+    if 'id_value' in query_args:
+        query_args['id_value'] = int(query_args['id_value'])  # is there a better way to do this?
+        put_value_id = query_args['id_value']
+    if 'name' in query_args:
+        put_value_name = query_args['name']
+    if 'age' in query_args:
+        put_value_age = query_args['age']
+        put_value_age = int(put_value_age)
+
+    print("params:", put_value_id, " (type =", type(put_value_id), ") ", put_value_name, " ", put_value_age, " (type =", type(put_value_age), ") ")
+
+    index = get_index_of_id_value(put_value_id)
+    if index == -1:
+        data_string = "PUT called but the requested id was not found: " + str(put_value_id)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    print("found ID", put_value_id, " at position ", index)
+
+    fav_colours = ["coral", "mauve"]
+    item = {
+        "id_value": put_value_id,
+        "name": put_value_name,
+        "age": put_value_age,
+        "city": "Seattle",          # did not add the city to the test so just hard code it
+        "fav_colours": fav_colours  # did not add the fav colours to the test so just hard code it
+    }
+    list_of_people[index] = item
+
+    data_string = item
+    data = json.dumps(data_string)
+
     return JsonResponse(data, safe=False)
 
 
@@ -315,84 +371,62 @@ def delete_test(request):
 
     global list_of_people
 
-    print("testing")
-    # Query string
-    query_string = "id_value=101&age=33"
+    # # this block of code illustrates accessing the params in a query string
+    # print("testing")
+    # # Query string
+    # query_string = "id_value=101&age=33"
+    #
+    # # Parse the query string into a dictionary
+    # parsed_data = urllib.parse.parse_qs(query_string)
+    #
+    # # Convert the parsed data into a more convenient format
+    # # parse_qs returns a dictionary with lists as values, we'll extract the single values
+    # python_object = {k: v[0] for k, v in parsed_data.items()}
+    #
+    # # Now you can access the data
+    # print(python_object)
+    # print(f"ID: {python_object['id_value']}")
+    # print(f"Age: {python_object['age']}")
+    # print("done testing")
 
-    # Parse the query string into a dictionary
-    parsed_data = urllib.parse.parse_qs(query_string)
+    # print("request body:")
+    # print(request.body)
+    # print("request body decode utf-8:")
 
-    # Convert the parsed data into a more convenient format
-    # parse_qs returns a dictionary with lists as values, we'll extract the single values
-    python_object = {k: v[0] for k, v in parsed_data.items()}
-
-    # Now you can access the data
-    print(python_object)
-    print(f"ID: {python_object['id_value']}")
-    print(f"Age: {python_object['age']}")
-    print("done testing")
-
-    print("request body")
-    print(request.body)
-    print(request.content_params)
-    # print(request.query_params)
-
-    # body = json.loads(request.body)
-    # body = request.body
-    # item_id = body.get('id')
-    # if item_id is not None:
-    #     print(f"Item to be deleted: {item_id}")
-    # body = request.body.decode('utf-8')
-    # print("1")
-    # print(body)
-    # print("1.5")
-    # item_id = body.get('id')
-    # print("1.6")
-    # print(item_id)
-    # data = json.loads(body)
-    # print("2")
-    # item_id = data.get('id')
-    # print(item_id)
-
-    print("new attempt:")
     # Parse the query string into a dictionary
     body = request.body.decode('utf-8')
-    parsed_data = urllib.parse.parse_qs(body)
+    # print(body)
 
-    # Convert the parsed data into a more convenient format
-    # parse_qs returns a dictionary with lists as values, we'll extract the single values
+    # print("parsed data:")
+    parsed_data = urllib.parse.parse_qs(body)
+    # print(parsed_data)
+
+    # convert the parsed data to an object
+    # returns a dictionary with lists as values, we'll extract the single values
     query_args = {k: v[0] for k, v in parsed_data.items()}
 
-    # Now you can access the data
-    print(query_args)
-    print(f"ID: {query_args['id_value']}")
-    print(f"Token: {query_args['csrfmiddlewaretoken']}")
-
-    post_id_value = int(query_args['id_value'])
-    print("!!! post_id_value = ", post_id_value)
-
-    print("here")
-
-    # post_id_value = request.POST.get('id_value', 999)
-    # post_id_value = request.GET.get('id_value', 999)
-    # post_id_value = request.data.get('id', 999)
-    # print("post_id_value = ", post_id_value)
-    #
-    # # id_value not specified correctly in API call
-    # if post_id_value == 999:
-    #     data_string = "API method = " + request.method + " called with invalid id"
-    #     print(data_string)
-    #     data = json.dumps(data_string)
-    #     return JsonResponse(data, safe=False)
-
-    print("calling with value ...", post_id_value)
-    index = get_index_of_id_value(post_id_value)
-    if index == -1:
-        data_string = "the requested id was not found: " + str(post_id_value)
+    if 'id_value' in query_args:
+        query_args['id_value'] = int(query_args['id_value'])  # is there a better way to do this?
+        id_value = query_args['id_value']
+    else:
+        keys = ""
+        for key in query_args.keys():
+            if len(keys) == 0:
+                keys += key
+            else:
+                keys += ", " + key
+        data_string = request.method + " called but id_value missing. Keys = " + keys
+        print(data_string)
         data = json.dumps(data_string)
         return JsonResponse(data, safe=False)
 
-    print("found ID", post_id_value, " at position ", index)
+    index = get_index_of_id_value(id_value)
+    if index == -1:
+        data_string = "DELETE called but the requested id was not found: " + str(id_value)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    print("found ID", id_value, " at position ", index)
 
     num_items = len(list_of_people)
     print("num items = ", num_items)
@@ -414,11 +448,9 @@ def delete_test(request):
 
 def rest_api_test(request):
     # post_value = request.POST.get('value', None)
-    print("rest_api_test()")
-    print("the request object:")
-    print(request)
-    print("done...")
-    print("request method = ", request.method)
+    print("rest_api_test() method = ", request.method)
+    # print("the request object:")
+    # print(request)
 
     if request.method == "GET":
         response = get_test(request)
