@@ -364,7 +364,8 @@ function ShowNextDie() {
 
     ShowSingleDie(dieName);
 
-    if (tickCount >= tickMax) {
+//    if (tickCount >= tickMax) {
+    if (tickCount >= tickRandom) {
         clearInterval(intervalId);
         diceSound_rolling.pause();
         ShowResult();

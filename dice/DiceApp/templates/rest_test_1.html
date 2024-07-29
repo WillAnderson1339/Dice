@@ -1,12 +1,13 @@
 {% extends "base.html" %} {% block title %} REST Test Page 1 {% endblock %}
 {% block content %}
+<!-- good web page for HTML colours: https://www.computerhope.com/htmcolor.htm  -->
 <body style="background-color:IndianRed;">
 
 {% load static %}
 <script src="{% static 'js/utils.js' %}"></script>
 <script src="{% static 'js/rest_1_utils.js' %}"></script>
 
-<h1>REST</h1>
+<h1>REST Test</h1>
 <p>This is the REST test page - examples of GET, POST, PUT, PATCH and DELETE calls </p>
 
 <!-- Example calling GET and return value of string, object, etc -->
@@ -55,7 +56,7 @@
 <input type="text" id="post_value_name" name="post_value_name" value="Carrie" style="width: 7em;margin-left: 1em">
 <input type="number" id="post_value_age" name="post_value_age" value="31" size = "4" min = "20" max = "39" style="width: 4em;margin-left: 1em">
 <input type="text" id="post_value_city" name="post_value_city" value="Austin" size = "8" style="width: 8em;margin-left: 1em">
-<button onclick="RESTAPITest('POST')" style="margin-top: 1em; margin-left: 1em">Post Value</button>
+<button onclick="RESTAPITest('POST')" style="margin-top: 1em; margin-left: 1em">Post Values</button>
 <br />
 <label for="put_ID_id" style="margin-left: 1em">Update ID:</label>
 <input type="number" id="put_ID_id" name="put_ID" value="100" min="100" max="199" style="width: 4em">
