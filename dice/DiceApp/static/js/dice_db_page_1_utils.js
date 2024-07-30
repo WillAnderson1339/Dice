@@ -20,6 +20,7 @@ function GetDiceListCallback(data, status) {
     console.log("Status:", status);
 
     dice_list = JSON.parse(data);
+
     console.log("JSON parsed:");
     console.log(dice_list);
     name = dice_list[0].fields.name;
@@ -61,14 +62,14 @@ function GetDiceInfoCallback(data, status) {
     console.log("data:", data);
     console.log("status:", status);
 
+    return_val = JSON.parse(data);
+
     if (status == "success") {
         $("#diceInfoId").removeAttr("hidden");
         $("#diceFacesId").empty();
 
         // save this line for when we use this function to insert the audio tags
         //elementText = "<audio id=\"" + diceSoundId + "\"><source src=\"" + diceSoundFile + "\" type=\"audio/mpeg\">audio not supported</audio>";
-
-        return_val = JSON.parse(data);
 
         if (typeof return_val == "string") {
             display_text = return_val;
@@ -80,9 +81,13 @@ function GetDiceInfoCallback(data, status) {
             // now add the dice face filenames
             display_text += "<li>Face Files:</li>";
             display_text += "<ul>";
-            for (index in return_val.diceFaces) {
-//                console.log("index = ", index, "name = ", return_val.diceFaces[index].name, "file = ", return_val.diceFaces[index].file);
-                display_text += "<li>" + return_val.diceFaces[index].name + " " + return_val.diceFaces[index].file + "</li>";
+            if (return_val.diceFaces.length == 0) {
+                    display_text += "<li>no dice faces found</li>";
+            }
+            else {
+                for (index in return_val.diceFaces) {
+                    display_text += "<li>" + return_val.diceFaces[index].name + " " + return_val.diceFaces[index].file + "</li>";
+                }
             }
             display_text += "</ul>";
 
@@ -95,10 +100,18 @@ function GetDiceInfoCallback(data, status) {
         }
         $("#diceFacesId").append(display_text);
     }
+
+    // when (if) the server returns a 500 error this is never reached - this callback function is not called
+    else {
+        console.log("GET call returned error:", status)
+    }
 }
 
 
 // example calling GET with the id parameter in the URL itself (instead of as a parameter)
+// NOTE: this GET call and the callback should be coded to return the Dice + Faces + Sounds and add the values to the
+//       HTML but this is meant to illustrate the different calling method with the id in the URL line instead so
+//       not coding everything (again)
 function GetDice() {
     console.log("GetDice() !1");
 
@@ -115,6 +128,8 @@ function GetDiceCallback(data, status) {
     console.log("data:", data);
     console.log("status:", status);
 
+    return_val = JSON.parse(data);
+
     if (status == "success") {
         $("#diceInfoId").removeAttr("hidden");
         $("#diceFacesId").empty();
@@ -122,11 +137,10 @@ function GetDiceCallback(data, status) {
         element = document.getElementById("diceNameId");
         element.innerHTML = "Dice Info:";
 
-        //elementText = "<audio id=\"" + diceSoundId + "\"><source src=\"" + diceSoundFile + "\" type=\"audio/mpeg\">audio not supported</audio>";
-        elementText = "<li>name: " + data.name + "</li>";
+        elementText = "<li>name: " + return_val.name + "</li>";
         $("#diceFacesId").append(elementText);
 
-        elementText = "<li>name: " + data.defaultFaceFile + "</li>";
+        elementText = "<li>name: " + return_val.defaultFaceFile + "</li>";
         $("#diceFacesId").append(elementText);
     }
 }
