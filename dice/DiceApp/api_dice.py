@@ -1,13 +1,17 @@
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.core.serializers import serialize
+import json
 
-from .models import Dice
+from .models import Dice, DiceFaces, DiceSounds
 from .serializers import DiceSerializer
 
 
 """GET call to return Dice objects"""
 def get_dice_list(request):
+    print("get_dice_list()")
+
     qs = Dice.objects.all()
     print("printing the query set")
     print(qs)
@@ -24,6 +28,7 @@ def get_dice_list(request):
     return JsonResponse(data, safe=False)
 
 
+# API call with the ID as a parameter (instead of in the URL line)
 def get_dice_info(request):
     print("get_dice_info()")
 
@@ -33,41 +38,88 @@ def get_dice_info(request):
     die_id = request.GET.get('id')
     print("die_id =", die_id)
     if die_id is None:
-        print("setting die_id = 1")
-        die_id = "1"
+        data_string = "die_id param missing"
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
 
-    qs = Dice.objects.get(pk=die_id)
-    # qs = Dice.objects.all()
-    # print("printing the query set")
+    # lookup the id with exception handling
+    try:
+        qs = Dice.objects.get(pk=die_id)
+
+        # Retrieve all DiceFaces related to the Dice object
+        dice_faces = DiceFaces.objects.filter(dice=qs)
+        # for face in dice_faces:
+        #     print(f"- {face.name}: {face.file}")
+
+        # Retrieve all sounds related to the Dice object
+        dice_sound = DiceSounds.objects.get(dice=qs)
+
+    except ObjectDoesNotExist:
+        data_string = f"die_id {die_id} does not exist"
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    except MultipleObjectsReturned:
+        # Handle the case where multiple Dice objects with the same ID exist (should not happen with primary key)
+        data_string = f"Multiple dice found with ID: {die_id}"
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    except Exception as e:
+        # Handle any other exceptions that may occur
+        data_string = f"An unexpected error occurred: {e}"
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    # print("printing the DICE query set")
     # print(qs)
+    # print(f"Query Set values are Name: {qs.name} defaultFaceFile: {qs.defaultFaceFile}")
     # print("done")
-    # 4 different ways to print a string with parameters
-    # print("Name:", qs.name, " defaultFaceFile: ", qs.defaultFaceFile)
-    # output = f"Name: {qs.name} defaultFaceFile: {qs.defaultFaceFile}"
-    # print(output)
-    print(f"Name: {qs.name} defaultFaceFile: {qs.defaultFaceFile}")
-    # print(qs.name)
-    # print("printing the defaultFaceFile")
-    # print(qs.defaultFaceFile)
 
-    print("qs: ", qs)
-    # data = serialize("json", qs, fields=('name', 'defaultFaceFile'))
-    data = qs
-    print("data: ", data)
+    diceFaces = []
+    for face in dice_faces:
+        # print(f"- {face.name}: {face.file}")
+        item_diceFace = {
+            "name": face.name,
+            "file": face.file
+        }
+        diceFaces.append(item_diceFace)
 
-    # print("printing the non-serialized data")
-    # print(data)
-    print("done")
+    # print("dice_faces count = ", len(dice_faces))
+    # print("diceFaces count = ", len(diceFaces))
+    # print("diceFaces = ", diceFaces)
 
-    serializer = DiceSerializer(qs)
-    print("serializer.data: ", serializer.data)
+    item_diceSound = {
+        "name": dice_sound.name,
+        "file": dice_sound.file,
+    }
 
-    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
-    # return HttpResponse("Hello World", content_type="application/json")
-    # return JsonResponse(data, safe=False)
-    return JsonResponse(serializer.data)
+    # print("diceSound = ", item_diceSound)
 
+    item = {
+        "id_value": 111,
+        "name": qs.name,
+        "defaultFaceFile": qs.defaultFaceFile,
+        "diceFaces": diceFaces,
+        # "diceSound": diceSound
+        "diceSound": item_diceSound
+    }
 
+    # print(f"Item values are Name: {item['name']} defaultFaceFile: {item['defaultFaceFile']} diceFaces: {item['diceFaces']} sound: {item['diceSound']}")
+
+    # serialize not working - not sure I understand how to use it properly - or if it would be effective here given the composite item
+    # serializer = DiceSerializer(qs)
+    # print("serializer.data: ", serializer.data)
+    # data = json.dumps(serializer.data)
+
+    data = json.dumps(item)
+    return JsonResponse(data, safe=False)
+
+# API call with the ID in the URL line (instead of as a parameter)
 def get_dice(request, dice_id):
     print("get_dice()", dice_id)
     dice = get_object_or_404(Dice, id=dice_id)

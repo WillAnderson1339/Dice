@@ -6,5 +6,3 @@ class DiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dice
         fields = ['name', 'defaultFaceFile']
-
-
