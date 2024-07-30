@@ -29,7 +29,7 @@
 <!-- Load Dice Info object with a GET call -->
 <h5>Load Dice Info with GET HTTP call</h5>
 <label for="dice_id" style="margin-left: 1em">Id:</label>
-<input type="number" id="dice_id" name="dice-id" value="3" min = "0" max = "20" style="width: 3em">
+<input type="number" id="dice_id" name="dice_id" value="3" min = "0" max = "20" style="width: 3em">
 <button onclick="GetDiceInfo()" style="margin-left: 1em">Dice Info</button>
 <button onclick="GetDice()" style="margin-left: 1em">Dice</button>
 <br /><br />
@@ -38,6 +38,24 @@
     <ul id="diceFacesId">
     </ul>
 </div>
+
+
+{% csrf_token %}
+
+<!-- Save Dice Info object with a POST call -->
+<h5>Save Dice POST HTTP call</h5>
+<label for="post_dice_name" style="margin-left: 1em">Name:</label>
+<input type="text" id="post_dice_name" name="default_face_id" value="name1" style="width: 5em">
+<label for="post_default_face" style="margin-left: 1em">Face:</label>
+<input type="text" id="post_default_face" name="default_face_id" value="face1.png" style="width: 6em">
+<button onclick="DiceAPI('POST')" style="margin-left: 1em">Save</button>
+<br /><br />
+
+<!-- Delete Dice Info object with a DELETE call -->
+<h5>Delete Dice Info with DELETE HTTP call</h5>
+<label for="delete_dice_id" style="margin-left: 1em">Id:</label>
+<input type="number" id="delete_dice_id" name="delete_dice_id_id" value="5" min = "1" max = "20" style="width: 3em">
+<button onclick="DiceAPI('DELETE')" style="margin-left: 1em">Delete</button>
 
 </body>
 {% endblock %}

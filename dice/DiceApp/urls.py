@@ -19,4 +19,5 @@ urlpatterns = [
     path("getTest", views.get_test, name="getTest"),
     path("postTest", views.post_test, name="postTest"),
     path("RESTAPITest", views.rest_api_test, name="restAPITest"),
+    path("DiceAPI", views.dice_api, name="diceAPI"),
 ]

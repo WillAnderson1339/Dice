@@ -1,3 +1,5 @@
+import urllib
+
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -31,6 +33,40 @@ def get_dice_list(request):
     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
     # return HttpResponse(data, content_type="application/json")
     return JsonResponse(data, safe=False)
+
+
+def dice_api(request):
+    """this is the common handler for all REST calls for the Dice object (other than the list of Dice objects) """
+    print("dice_api() method = ", request.method)
+    # print("the request object:")
+    # print(request)
+
+    if request.method == "GET":
+        response = get_dice_info(request)
+        return response
+
+    elif request.method == "POST":
+        response = post_dice(request)
+        return response
+
+    # elif request.method == "PUT":
+    #     response = put_test(request)
+    #     return response
+    #
+    # elif request.method == "PATCH":
+    #     response = patch_test(request)
+    #     return response
+    #
+    elif request.method == "DELETE":
+        response = delete_dice(request)
+        return response
+
+    else:
+        print("unexpected API method = ", request.method)
+        data_string = "unexpected API method = " + request.method
+        data = json.dumps(data_string)
+
+        return JsonResponse(data, safe=False)
 
 
 # API call with the ID as a parameter (instead of in the URL line)
@@ -166,6 +202,106 @@ def get_dice(request, dice_id):
 
     # return JsonResponse(serializer.data)
     return JsonResponse(data, safe=False)
+
+
+def post_dice(request):
+    print("post_test()")
+
+    global list_of_people
+
+    post_value_name = request.POST.get('name', "Loki")
+    post_value_defaultFaceFile = request.POST.get('defaultFaceFile', "Loki")
+    print("post_test()", post_value_name, " ", post_value_defaultFaceFile)
+
+    # print("saving not yet implemented!")
+    # Create a new Dice object
+    new_dice = Dice(name=post_value_name, defaultFaceFile=post_value_defaultFaceFile)
+
+    # Save the new Dice object to the database
+    new_dice.save()
+
+    dice_faces_list = []
+
+    item_diceSound = {
+        "name": "",
+        "file": "",
+    }
+
+    item = {
+        "id_value": 111,
+        "name": new_dice.name,
+        "defaultFaceFile": new_dice.defaultFaceFile,
+        "diceFaces": dice_faces_list,
+        "diceSound": item_diceSound
+    }
+
+    data = json.dumps(item)
+    print("data:")
+    print(data)
+    return JsonResponse(data, safe=False)
+
+
+def delete_dice(request):
+    print("delete_dice()")
+
+    # Parse the query string into a dictionary
+    body = request.body.decode('utf-8')
+    # print(body)
+
+    # print("parsed data:")
+    parsed_data = urllib.parse.parse_qs(body)
+    # print(parsed_data)
+
+    # convert the parsed data to an object
+    # returns a dictionary with lists as values, we'll extract the single values
+    query_args = {k: v[0] for k, v in parsed_data.items()}
+
+    if 'id_value' in query_args:
+        query_args['id_value'] = int(query_args['id_value'])  # is there a better way to do this?
+        id_value = query_args['id_value']
+    else:
+        keys = ""
+        for key in query_args.keys():
+            if len(keys) == 0:
+                keys += key
+            else:
+                keys += ", " + key
+        data_string = request.method + " called but id_value missing. Keys = " + keys
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    try:
+        # dice = get_object_or_404(Dice, id=id_value)
+        dice = Dice.objects.get(pk=id_value)
+    except ObjectDoesNotExist:
+        data_string = "DELETE called but the requested id was not found: " + str(id_value)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    dice.delete()
+    print("item removed: ", dice)
+    print("item removed name: ", dice.name)
+
+    dice_faces_list = []
+
+    item_diceSound = {
+        "name": "",
+        "file": "",
+    }
+
+    item = {
+        "id_value": id_value,
+        "name": dice.name,
+        "defaultFaceFile": dice.defaultFaceFile,
+        "diceFaces": dice_faces_list,
+        "diceSound": item_diceSound
+    }
+
+    data = json.dumps(item)
+
+    return JsonResponse(data, safe=False)
+
 
 
 def get_dice_images(request):

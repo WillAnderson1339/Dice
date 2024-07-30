@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="updated the DB Test Dice Info (both server and client) to return the full Dice object including the faces and sound">
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="added error checking and updated the GetDice GET and callback">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dice/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -220,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722301877908</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="added error checking and updated the GetDice GET and callback">
+      <option name="closed" value="true" />
+      <created>1722363332372</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1722363332372</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -251,7 +261,8 @@
     <MESSAGE value="Added PATCH and cleaned up code" />
     <MESSAGE value="created the api_dice.py file for code separation. Removed the commended out code from code separation" />
     <MESSAGE value="updated the DB Test Dice Info (both server and client) to return the full Dice object including the faces and sound" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated the DB Test Dice Info (both server and client) to return the full Dice object including the faces and sound" />
+    <MESSAGE value="added error checking and updated the GetDice GET and callback" />
+    <option name="LAST_COMMIT_MESSAGE" value="added error checking and updated the GetDice GET and callback" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
