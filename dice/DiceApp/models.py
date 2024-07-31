@@ -7,7 +7,7 @@ class Dice(models.Model):
     defaultFaceFile = models.CharField(max_length=200)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} {self.defaultFaceFile}"
 
 
 class DiceFaces(models.Model):

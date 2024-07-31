@@ -15,25 +15,6 @@ def bold_text(text):
     return "\033[1m" + text + "\033[0m"
 
 
-def get_dice_list(request):
-    """GET call to return Dice objects"""
-    print("get_dice_list()")
-
-    qs = Dice.objects.all()
-    # print("printing the query set")
-    # print(qs)
-    # print("done")
-
-    data = serialize("json", qs, fields=('name', 'defaultFaceFile'))
-
-    # print("printing the serialized data")
-    # print(data)
-    # print("done")
-
-    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
-    # return HttpResponse(data, content_type="application/json")
-    return JsonResponse(data, safe=False)
-
 
 def dice_api(request):
     """this is the common handler for all REST calls for the Dice object (other than the list of Dice objects) """
@@ -42,7 +23,7 @@ def dice_api(request):
     # print(request)
 
     if request.method == "GET":
-        response = get_dice_info(request)
+        response = get_dice(request)
         return response
 
     elif request.method == "POST":
@@ -70,32 +51,27 @@ def dice_api(request):
 
 
 # API call with the ID as a parameter (instead of in the URL line)
-def get_dice_info(request):
-    print("get_dice_info()")
+def get_dice(request):
+    print("get_dice()")
 
     # die_id = request.GET.get('id', 1) would use default of 1 if id not supplied
     # parameters = request.GET.dict() to access params as a dict. can also use request.GET
     # parameters = request.GET.items() to access as list of key-value pairs
-    die_id = request.GET.get('id')
-    # print("die_id =", die_id)
+
+    die_id = request.GET.get('id_value')
+    print("die_id =", die_id, "type is", type(die_id))
+
+    # if the id is not specified as a parameter then return the list of Dice instead of info for a specific Dice Id
     if die_id is None:
-        data_string = "die_id param missing"
-        print(data_string)
-        data = json.dumps(data_string)
-        return JsonResponse(data, safe=False)
+        # data_string = "die_id param missing"
+        # print(data_string)
+        # data = json.dumps(data_string)
+        # return JsonResponse(data, safe=False)
+        return get_dice_list(request)
 
     # lookup the id with exception handling
     try:
         qs = Dice.objects.get(pk=die_id)
-
-        # Retrieve all DiceFaces related to the Dice object
-        # commenting out the next line and moving it to its own try/catch code below
-        # dice_faces = DiceFaces.objects.filter(dice=qs)
-        # for face in dice_faces:
-        #     print(f"- {face.name}: {face.file}")
-
-        # Retrieve all sounds related to the Dice object
-        dice_sound = DiceSounds.objects.get(dice=qs)
 
     except ObjectDoesNotExist:
         data_string = f"die_id {die_id} does not exist"
@@ -134,6 +110,24 @@ def get_dice_info(request):
         data = json.dumps(data_string)
         return JsonResponse(data, safe=False)
 
+    # lookup the dice sound with exception handling (illustrating an example where it is valid to have no child objects)
+    dice_sound_found = False
+    try:
+        # Retrieve all sounds related to the Dice object
+        dice_sound = DiceSounds.objects.get(dice=qs)
+        print("found dice sound: ", dice_sound)
+        dice_sound_found = True
+    except ObjectDoesNotExist:
+        print(f"no dice sounds found for die ID {die_id}")
+
+    except Exception as e:
+        # Handle any other exceptions that may occur
+        data_string = f"An unexpected error occurred: {e}"
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+
     # print("printing the DICE query set")
     # print(qs)
     # print(f"Query Set values are Id: {qs.id} Name: {qs.name} defaultFaceFile: {qs.defaultFaceFile}")
@@ -152,20 +146,26 @@ def get_dice_info(request):
     # print("diceFaces count = ", len(dice_faces_list))
     # print("diceFaces = ", dice_faces_list)
 
-    item_diceSound = {
-        "name": dice_sound.name,
-        "file": dice_sound.file,
-    }
-
-    # print("diceSound = ", item_diceSound)
-
     item = {
         "id_value": qs.id,
         "name": qs.name,
         "defaultFaceFile": qs.defaultFaceFile,
-        "diceFaces": dice_faces_list,
-        "diceSound": item_diceSound
+        # "diceFaces": dice_faces_list,
+        # "diceSound": item_diceSound
     }
+
+    # only add the faces if there are any (client will handle showing face info based on the presence of this attrib
+    if len(dice_faces_list) > 0:
+        item["diceFaces"] = dice_faces_list
+
+    # only add the sound if there are any (client will handle showing sound info based on the presence of this attrib
+    # I was not sure how to code the if statement to check if the dice_sound object was undefined so used boolean
+    if dice_sound_found:
+        item_diceSound = {
+            "name": dice_sound.name,
+            "file": dice_sound.file
+        }
+        item["diceSound"] = item_diceSound
 
     # print("printing item: ")
     # print(item)
@@ -185,7 +185,7 @@ def get_dice_info(request):
 
 
 # API call with the ID in the URL line (instead of as a parameter)
-def get_dice(request, dice_id):
+def get_dice_id_from_url(request, dice_id):
     print("get_dice()", dice_id)
 
     # get_object_or_404 will cause a return from get_dice with a 404 status (code after this line will not execute)
@@ -241,6 +241,46 @@ def insert_new_dice(name, defaultFaceFile):
     item = create_dice_item(new_dice.id, name, defaultFaceFile)
 
     return item
+
+
+def get_dice_list(request):
+    """GET call to return Dice objects"""
+    print("get_dice_list()")
+
+    qs = Dice.objects.all()
+    # print("printing the query set")
+    # print(qs)
+    # print("length = ", len(qs))
+    # print("done")
+
+    # # the following code is an example of iterating over the qs to build a list of items
+    # # (useful if the item or item list is more than the model)
+    # dice_list = []
+    # print("items are:")
+    # for dice_item in qs:
+    #     print(dice_item)
+    #     item = {
+    #         "id_value": dice_item.id,
+    #         "name": dice_item.name,
+    #         "defaultFaceFile": dice_item.defaultFaceFile,
+    #         # "diceFaces": dice_faces_list,
+    #         # "diceSound": item_diceSound
+    #     }
+    #     dice_list.append(item)
+    # print("-----------------")
+    # data = json.dumps(dice_list)
+    # print("printing json.dumps data")
+    # print(data)
+
+    data = serialize("json", qs, fields=('name', 'defaultFaceFile'))
+    # print("printing the serialized data")
+    # print(data)
+
+    # print("done!")
+
+    # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
+    # return HttpResponse(data, content_type="application/json")
+    return JsonResponse(data, safe=False)
 
 
 def post_dice(request):
@@ -456,7 +496,6 @@ def delete_dice(request):
     data = json.dumps(item)
 
     return JsonResponse(data, safe=False)
-
 
 
 def get_dice_images(request):

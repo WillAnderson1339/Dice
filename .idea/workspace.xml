@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="implemented the common DiceAPI handler and the POST and DELETE verbs">
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="implemented the PATCH and cleaned up code.  Maybe all working now?">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/api_rest_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/api_rest_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/dice_db_page_1_utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/rest_1_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rest_1_utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dice/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -239,7 +239,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722368082081</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="implemented the PATCH and cleaned up code.  Maybe all working now?">
+      <option name="closed" value="true" />
+      <created>1722385101917</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1722385101917</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -272,16 +280,7 @@
     <MESSAGE value="updated the DB Test Dice Info (both server and client) to return the full Dice object including the faces and sound" />
     <MESSAGE value="added error checking and updated the GetDice GET and callback" />
     <MESSAGE value="implemented the common DiceAPI handler and the POST and DELETE verbs" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented the common DiceAPI handler and the POST and DELETE verbs" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dice/DiceApp/urls.py</url>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="implemented the PATCH and cleaned up code.  Maybe all working now?" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented the PATCH and cleaned up code.  Maybe all working now?" />
   </component>
 </project>
