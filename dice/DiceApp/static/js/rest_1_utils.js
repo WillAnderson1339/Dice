@@ -212,7 +212,7 @@ function DeleteTestCallback(data, status) {
 
     // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
     if (typeof return_val == 'object') {
-        display_string = "removed item: [" + return_val.id_value + "] " + return_val.name
+        display_string = "removed item: [" + return_val.id_value + "] " + return_val.name;
     }
     else {
         display_string = return_val;
@@ -268,12 +268,12 @@ function RESTAPITest(type) {
         break;
 
       case "PATCH":
-        console.log("PUT!!!");
+        console.log("PATCH!");
         // note even when an int is passed to the ajax call it will be a string on the server side of the call
-        put_ID = $('#put_ID_id').val();
-        put_name = $('#put_name_id').val();
-        put_age = $('#put_age_id').val();
-        console.log("put_ID = ", put_ID, " put_name = ", put_name, "put_age = ", put_age, " type = (", typeof put_age, ")");
+        patch_ID = $('#put_ID_id').val();
+        patch_name = $('#put_name_id').val();
+        patch_age = $('#put_age_id').val();
+        console.log("patch_ID = ", patch_ID, " patch_name = ", patch_name, "patch_age = ", patch_age, " type = (", typeof patch_age, ")");
 
         // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
         // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
@@ -287,7 +287,7 @@ function RESTAPITest(type) {
             url: url,
             dataType: 'json',
             contentType: 'application/json',
-            data:{id_value: put_ID, name: put_name, age: put_age, csrfmiddlewaretoken: csrftoken},
+            data:{id_value: patch_ID, name: patch_name, age: patch_age, csrfmiddlewaretoken: csrftoken},
             headers: {'X-CSRFToken': csrftoken},
             mode: 'same-origin', // Do not send CSRF token to another domain.
             success: PatchTestCallback,
@@ -296,7 +296,7 @@ function RESTAPITest(type) {
         break;
 
       case "PUT":
-        console.log("PUT!!!");
+        console.log("PUT!");
         // note even when an int is passed to the ajax call it will be a string on the server side of the call
         put_ID = $('#put_ID_id').val();
         put_name = $('#put_name_id').val();
@@ -315,6 +315,7 @@ function RESTAPITest(type) {
             url: url,
             dataType: 'json',
             contentType: 'application/json',
+            // TODO: id_value shoud not be passed to the PUT call
             data:{id_value: put_ID, name: put_name, age: put_age, csrfmiddlewaretoken: csrftoken},
             headers: {'X-CSRFToken': csrftoken},
             mode: 'same-origin', // Do not send CSRF token to another domain.

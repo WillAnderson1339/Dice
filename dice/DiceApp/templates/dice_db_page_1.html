@@ -8,8 +8,9 @@
 <script src="{% static 'js/dice_db_page_1_utils.js' %}"></script>
 
 <h1>DB Test</h1>
-<p>This is the DB test page - examples of GET calls and DB queries</p>
+<p>This is the DB test page - examples of GET, POST, PUT, DELETE calls and DB queries</p>
 
+<div id="dice_list_by_template_Id">
 <!-- example loading dice list Django template code -->
 <h5>Load Dice objects with Django template code</h5>
 <ul>
@@ -19,10 +20,17 @@
     </li>
     {% endfor %}
 </ul>
+</div>
+
+<span>Result:</span>
+<span id="RESTResponseResult" style="width: 1em"></span>
+<ul id="RESTResponse">
+</ul>
 
 <!-- example loading dice list with a GET call -->
 <h5>Load Dice objects  with GET HTTP call</h5>
 <button onclick="GetDiceList()" style="margin-left: 1em">Dice List</button>
+<button onclick="$('#dice_list_by_template_Id').hide()" style="margin-left: 1em">Hide Template</button>
 <br /><br />
 <ul id="list2"></ul>
 
@@ -43,18 +51,33 @@
 {% csrf_token %}
 
 <!-- Save Dice Info object with a POST call -->
-<h5>Save Dice POST HTTP call</h5>
-<label for="post_dice_name" style="margin-left: 1em">Name:</label>
-<input type="text" id="post_dice_name" name="default_face_id" value="name1" style="width: 5em">
-<label for="post_default_face" style="margin-left: 1em">Face:</label>
-<input type="text" id="post_default_face" name="default_face_id" value="face1.png" style="width: 6em">
-<button onclick="DiceAPI('POST')" style="margin-left: 1em">Save</button>
+<h5>Save Dice POST or PUT HTTP call</h5>
+<label for="dice_name" style="margin-left: 1em">Name:</label>
+<input type="text" id="dice_name" name="default_face_id" value="name1" style="width: 5em">
+<label for="default_face" style="margin-left: 1em">Face:</label>
+<input type="text" id="default_face" name="default_face_id" value="face1.png" style="width: 6em">
+<button onclick="DiceAPI('POST')" style="margin-left: 1em">Post</button>
+<button onclick="DiceAPI('PUT')" style="margin-left: 1em">Put</button>
+<label for="patch_dice_id" style="margin-left: 1em">Id:</label>
+<input type="number" id="patch_dice_id" name="patch_dice_id_id" value="20" min = "1" max = "50" style="width: 3em">
+<button onclick="DiceAPI('PATCH')" style="margin-left: 1em">Patch</button>
 <br /><br />
+
+<!-- Save Dice Info object with a PUT call -->
+<!--
+<h5>Save Dice PUT HTTP call</h5>
+<label for="put_dice_name" style="margin-left: 1em">Name:</label>
+<input type="text" id="put_dice_name" name="default_face_id" value="name1" style="width: 5em">
+<label for="put_default_face" style="margin-left: 1em">Face:</label>
+<input type="text" id="put_default_face" name="default_face_id" value="face1.png" style="width: 6em">
+<button onclick="DiceAPI('PUT')" style="margin-left: 1em">Put</button>
+<br /><br />
+-->
 
 <!-- Delete Dice Info object with a DELETE call -->
 <h5>Delete Dice Info with DELETE HTTP call</h5>
 <label for="delete_dice_id" style="margin-left: 1em">Id:</label>
-<input type="number" id="delete_dice_id" name="delete_dice_id_id" value="5" min = "1" max = "20" style="width: 3em">
+<input type="number" id="delete_dice_id" name="delete_dice_id_id" value="15" min = "1" max = "50" style="width: 3em">
 <button onclick="DiceAPI('DELETE')" style="margin-left: 1em">Delete</button>
 
 </body>

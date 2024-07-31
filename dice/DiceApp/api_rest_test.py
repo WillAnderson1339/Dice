@@ -358,6 +358,9 @@ def patch_test(request):
 
 
 def put_test(request):
+    """The HTTP PUT method is used to create a new resource or replace a resource. It’s similar to the POST method,
+    in that it sends data to a server, but it’s idempotent. This means that the effect of multiple PUT requests
+    should be the same as one PUT request."""
     print("put_test()")
 
     global list_of_people

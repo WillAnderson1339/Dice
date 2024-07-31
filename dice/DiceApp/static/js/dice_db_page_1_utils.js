@@ -16,32 +16,35 @@ function GetDiceList() {
 function GetDiceListCallback(data, status) {
     console.log("GetDiceListCallback() !1");
 
-    console.log("data:", data);
-    console.log("Status:", status);
+//    console.log("data:", data);
+//    console.log("Status:", status);
 
     dice_list = JSON.parse(data);
 
-    console.log("JSON parsed:");
-    console.log(dice_list);
-    name = dice_list[0].fields.name;
-    console.log("name at pos 0:", name);
-    console.log("length of list: ", dice_list.length);
-    console.log("list 0:");
-    console.log(dice_list[0]);
-    console.log("list 1:");
-    console.log(dice_list[1]);
+//    console.log(dice_list);
+//    name = dice_list[0].fields.name;
+//    console.log("name at pos 0:", name);
 
-    console.log("looping:");
+    // clear the list of any if they exist
+    $("#list2").empty();
+
+    count = 0;
     for (die of dice_list) {
-        console.log("die id", die.pk);
-        console.log("die name", die.fields.name);
         elementText = "<li>";
         elementText += die.fields.name + "(id = " + die.pk + ")";
         elementText += "</li>";
         $("#list2").append(elementText);
+        count += 1;
     }
-    console.log("list:")
-    console.log(dice_list);
+
+    // update the result tags
+    response_result_string = "success"
+    response_string = "<li>";
+    response_string += "There are now " + String(count) + " Dice in the database"
+    response_string += "</li>";
+    $('#RESTResponseResult').text(response_result_string);
+    $('#RESTResponse').empty();
+    $("#RESTResponse").append(response_string);
 }
 
 
@@ -59,8 +62,8 @@ function GetDiceInfo() {
 function GetDiceInfoCallback(data, status) {
     console.log("GetDiceInfoCallback()  !1");
 
-    console.log("data:", data);
-    console.log("status:", status);
+//    console.log("data:", data);
+//    console.log("status:", status);
 
     return_val = JSON.parse(data);
 
@@ -92,7 +95,6 @@ function GetDiceInfoCallback(data, status) {
             display_text += "</ul>";
 
             // now add the dice sound
-            console.log("sound name = ", return_val.diceSound.name, "file = ", return_val.diceSound.file);
             display_text += "<li>Sound File:</li>";
             display_text += "<ul>";
             display_text += "<li>" + return_val.diceSound.name + " " + return_val.diceSound.file + "</li>";
@@ -125,8 +127,8 @@ function GetDice() {
 function GetDiceCallback(data, status) {
     console.log("GetDiceCallback()  !1");
 
-    console.log("data:", data);
-    console.log("status:", status);
+//    console.log("data:", data);
+//    console.log("status:", status);
 
     return_val = JSON.parse(data);
 
@@ -173,82 +175,80 @@ function DiceAPI(type) {
       case "POST":
         console.log("POST!");
 
-        post_value_name = $('#post_dice_name').val();
-        post_value_defaultFaceFile = $('#post_default_face').val();
-        console.log("name = ", post_value_name, "defaultFaceFile = ", post_value_defaultFaceFile);
+        dice_name = $('#dice_name').val();
+        dice_defaultFaceFile = $('#default_face').val();
+        console.log("name = ", dice_name, "defaultFaceFile = ", dice_defaultFaceFile);
 
         // url = "postTest?value=" + post_value;
         // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
         // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
         url = "DiceAPI";
-        console.log("url to call:", url, "data: name = ", post_value_name, "defaultFaceFile = ", post_value_defaultFaceFile);
+        console.log("url to call:", url, "data: name = ", dice_name, "defaultFaceFile = ", dice_defaultFaceFile);
 
         $.ajax({
             type: 'POST',
             url: url,
 //            data:{value: post_value, csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()},
-            data:{name: post_value_name, defaultFaceFile: post_value_defaultFaceFile, csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()},
+            data:{name: dice_name, defaultFaceFile: dice_defaultFaceFile, csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()},
             success: PostDiceCallback,
             error: function(data, status) {console.log("ERROR calling url:", url);}
         });
         break;
 
       case "PATCH":
-        console.log("PUT!!!");
-        console.log("not yet implemented");
-//        // note even when an int is passed to the ajax call it will be a string on the server side of the call
-//        put_ID = $('#put_ID_id').val();
-//        put_name = $('#put_name_id').val();
-//        put_age = $('#put_age_id').val();
-//        console.log("put_ID = ", put_ID, " put_name = ", put_name, "put_age = ", put_age, " type = (", typeof put_age, ")");
-//
-//        // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
-//        // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
-//        url = "RESTAPITest";
-//        console.log("url to call:", url);
-//
-//        csrftoken = $("[name=csrfmiddlewaretoken]").val();
-//
-//        $.ajax({
-//            type: 'PATCH',
-//            url: url,
-//            dataType: 'json',
-//            contentType: 'application/json',
-//            data:{id_value: put_ID, name: put_name, age: put_age, csrfmiddlewaretoken: csrftoken},
-//            headers: {'X-CSRFToken': csrftoken},
-//            mode: 'same-origin', // Do not send CSRF token to another domain.
-//            success: PatchTestCallback,
-//            error: function(data, status) {console.log("ERROR calling url:", url);}
-//        });
+        console.log("PATCH!");
+        // note even when an int is passed to the ajax call it will be a string on the server side of the call
+        patch_ID = $('#patch_dice_id').val();
+        patch_name = $('#dice_name').val();
+        patch_defaultFaceFile = $('#default_face').val();
+        console.log("patch_ID = ", patch_ID, " patch_name = ", patch_name, "patch_defaultFaceFile = ", patch_defaultFaceFile, " type = (", typeof patch_ID, ")");
+
+        // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
+        // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
+        url = "DiceAPI";
+        console.log("url to call:", url);
+
+        csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+        $.ajax({
+            type: 'PATCH',
+            url: url,
+            dataType: 'json',
+            contentType: 'application/json',
+            data:{id_value: patch_ID, name: patch_name, defaultFaceFile: patch_defaultFaceFile, csrfmiddlewaretoken: csrftoken},
+            headers: {'X-CSRFToken': csrftoken},
+            mode: 'same-origin', // Do not send CSRF token to another domain.
+            success: PatchDiceCallback,
+            error: function(data, status) {console.log("ERROR calling url:", url);}
+        });
         break;
 
       case "PUT":
         console.log("PUT!");
-        console.log("not yet implemented");
 //        // note even when an int is passed to the ajax call it will be a string on the server side of the call
 //        put_ID = $('#put_ID_id').val();
-//        put_name = $('#put_name_id').val();
-//        put_age = $('#put_age_id').val();
-//        console.log("put_ID = ", put_ID, " put_name = ", put_name, "put_age = ", put_age, " type = (", typeof put_age, ")");
-//
-//        // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
-//        // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
-//        url = "RESTAPITest";
-//        console.log("url to call:", url);
-//
-//        csrftoken = $("[name=csrfmiddlewaretoken]").val();
-//
-//        $.ajax({
-//            type: 'PUT',
-//            url: url,
-//            dataType: 'json',
-//            contentType: 'application/json',
-//            data:{id_value: put_ID, name: put_name, age: put_age, csrfmiddlewaretoken: csrftoken},
-//            headers: {'X-CSRFToken': csrftoken},
-//            mode: 'same-origin', // Do not send CSRF token to another domain.
-//            success: PutTestCallback,
-//            error: function(data, status) {console.log("ERROR calling url:", url);}
-//        });
+        dice_name = $('#dice_name').val();
+        dice_defaultFaceFile = $('#default_face').val();
+        console.log("name = ", dice_name, "defaultFaceFile = ", dice_defaultFaceFile);
+
+        // the query params will be added in the data section of the AJAX call. This is b/c I don't know how to specify
+        // the csrf token other than providing the data attr (and that over-rides the previously supplied parameters on the url line)
+        url = "DiceAPI";
+        console.log("url to call:", url);
+
+        csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+        $.ajax({
+            type: 'PUT',
+            url: url,
+            dataType: 'json',
+            contentType: 'application/json',
+            data:{name: dice_name, defaultFaceFile: dice_defaultFaceFile, csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()},
+            headers: {'X-CSRFToken': csrftoken},
+            mode: 'same-origin', // Do not send CSRF token to another domain.
+            success: PutDiceCallback,
+            error: function(data, status) {console.log("ERROR calling url:", url);}
+        });
         break;
 
       case "DELETE":
@@ -299,26 +299,123 @@ function DiceAPI(type) {
 function PostDiceCallback(data, status) {
     console.log("PostDiceCallback() !1");
 
-    console.log("data:", data);
-    console.log("Status:", status);
+//    console.log("data:", data);
+//    console.log("Status:", status);
 
     return_val = JSON.parse(data);
 
-    console.log("return_val:", return_val);
+//    console.log("return_val:", return_val);
 
-    console.log("done");
+    // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
+    if (typeof return_val == 'object') {
+        response_result_string = "success"
+        response_string = "<li>";
+        response_string += "inserted item: [" + return_val.id_value + "] " + return_val.name
+        response_string += "</li>";
+    }
+    else {
+        display_string = return_val;
+        response_result_string = "unable to insert"
+        response_string = "<li>";
+        response_string += return_val
+        response_string += "</li>";
+    }
+
+    // update the result tags
+    $('#RESTResponseResult').text(response_result_string);
+    $('#RESTResponse').empty();
+    $("#RESTResponse").append(response_string);
+}
+
+function PutDiceCallback(data, status) {
+    console.log("PutDiceCallback() !1");
+
+//    console.log("data:", data);
+//    console.log("Status:", status);
+
+    return_val = JSON.parse(data);
+
+//    console.log("return_val:", return_val);
+
+    // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
+    if (typeof return_val == 'object') {
+        response_result_string = "success"
+        response_string = "<li>";
+        response_string += "inserted item: [" + return_val.id_value + "] " + return_val.name
+        response_string += "</li>";
+    }
+    else {
+        display_string = return_val;
+        response_result_string = "unable to insert"
+        response_string = "<li>";
+        response_string += return_val
+        response_string += "</li>";
+    }
+
+    // update the result tags
+    $('#RESTResponseResult').text(response_result_string);
+    $('#RESTResponse').empty();
+    $("#RESTResponse").append(response_string);
+}
+
+function PatchDiceCallback(data, status) {
+    console.log("PatchDiceCallback() !1");
+
+//    console.log("data:", data);
+//    console.log("Status:", status);
+
+    return_val = JSON.parse(data);
+
+//    console.log("return_val:", return_val);
+
+    // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
+    if (typeof return_val == 'object') {
+        response_result_string = "success"
+        response_string = "<li>";
+        response_string += "updated item: [" + return_val.id_value + "] " + return_val.name
+        response_string += "</li>";
+    }
+    else {
+        display_string = return_val;
+        response_result_string = "unable to update"
+        response_string = "<li>";
+        response_string += return_val
+        response_string += "</li>";
+    }
+
+    // update the result tags
+    $('#RESTResponseResult').text(response_result_string);
+    $('#RESTResponse').empty();
+    $("#RESTResponse").append(response_string);
 }
 
 function DeleteDiceCallback(data, status) {
     console.log("DeleteDiceCallback() !1");
 
-    console.log("data:", data);
-    console.log("Status:", status);
+//    console.log("data:", data);
+//    console.log("Status:", status);
 
     return_val = JSON.parse(data);
+//    console.log("return_val:", return_val);
 
-    console.log("return_val:", return_val);
+    // returnVal will be an object of the deleted item if successfully deleted or a string saying ID not found
+    if (typeof return_val == 'object') {
+        response_result_string = "success"
+        response_string = "<li>";
+        response_string += "removed item: [" + return_val.id_value + "] " + return_val.name
+        response_string += "</li>";
+    }
+    else {
+        display_string = return_val;
+        response_result_string = "unable to delete"
+        response_string = "<li>";
+        response_string += return_val
+        response_string += "</li>";
+    }
 
-    console.log("done");
+    // update the result tags
+    $('#RESTResponseResult').text(response_result_string);
+    $('#RESTResponse').empty();
+    $("#RESTResponse").append(response_string);
 }
 

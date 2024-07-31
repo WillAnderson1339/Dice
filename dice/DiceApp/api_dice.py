@@ -20,15 +20,15 @@ def get_dice_list(request):
     print("get_dice_list()")
 
     qs = Dice.objects.all()
-    print("printing the query set")
-    print(qs)
-    print("done")
+    # print("printing the query set")
+    # print(qs)
+    # print("done")
 
     data = serialize("json", qs, fields=('name', 'defaultFaceFile'))
 
-    print("printing the serialized data")
-    print(data)
-    print("done")
+    # print("printing the serialized data")
+    # print(data)
+    # print("done")
 
     # if return JsonResponse() object it would cause our JSON output to contain backslashes due to double serialization
     # return HttpResponse(data, content_type="application/json")
@@ -49,14 +49,14 @@ def dice_api(request):
         response = post_dice(request)
         return response
 
-    # elif request.method == "PUT":
-    #     response = put_test(request)
-    #     return response
-    #
-    # elif request.method == "PATCH":
-    #     response = patch_test(request)
-    #     return response
-    #
+    elif request.method == "PUT":
+        response = put_dice(request)
+        return response
+
+    elif request.method == "PATCH":
+        response = patch_dice(request)
+        return response
+
     elif request.method == "DELETE":
         response = delete_dice(request)
         return response
@@ -77,7 +77,7 @@ def get_dice_info(request):
     # parameters = request.GET.dict() to access params as a dict. can also use request.GET
     # parameters = request.GET.items() to access as list of key-value pairs
     die_id = request.GET.get('id')
-    print("die_id =", die_id)
+    # print("die_id =", die_id)
     if die_id is None:
         data_string = "die_id param missing"
         print(data_string)
@@ -179,8 +179,8 @@ def get_dice_info(request):
     # data = json.dumps(serializer.data)
 
     data = json.dumps(item)
-    print("data:")
-    print(data)
+    # print("data:")
+    # print(data)
     return JsonResponse(data, safe=False)
 
 
@@ -190,36 +190,22 @@ def get_dice(request, dice_id):
 
     # get_object_or_404 will cause a return from get_dice with a 404 status (code after this line will not execute)
     dice = get_object_or_404(Dice, id=dice_id)
-    print("dice =", dice)
+    # print("dice =", dice)
 
     serializer = DiceSerializer(dice)
-    print("serializer =", serializer)
-    print("serializer.data =", serializer.data)
+    # print("serializer =", serializer)
+    # print("serializer.data =", serializer.data)
 
     data = json.dumps(serializer.data)
-    print("data:")
-    print(data)
+    # print("data:")
+    # print(data)
 
     # return JsonResponse(serializer.data)
     return JsonResponse(data, safe=False)
 
 
-def post_dice(request):
-    print("post_test()")
-
-    global list_of_people
-
-    post_value_name = request.POST.get('name', "Loki")
-    post_value_defaultFaceFile = request.POST.get('defaultFaceFile', "Loki")
-    print("post_test()", post_value_name, " ", post_value_defaultFaceFile)
-
-    # print("saving not yet implemented!")
-    # Create a new Dice object
-    new_dice = Dice(name=post_value_name, defaultFaceFile=post_value_defaultFaceFile)
-
-    # Save the new Dice object to the database
-    new_dice.save()
-
+def create_dice_item(dice_id, name, defaultFaceFile):
+    """pass -1 for dice_id when unknown id"""
     dice_faces_list = []
 
     item_diceSound = {
@@ -228,16 +214,198 @@ def post_dice(request):
     }
 
     item = {
-        "id_value": 111,
-        "name": new_dice.name,
-        "defaultFaceFile": new_dice.defaultFaceFile,
+        # "id_value": dice_id,
+        "name": name,
+        "defaultFaceFile": defaultFaceFile,
         "diceFaces": dice_faces_list,
         "diceSound": item_diceSound
     }
 
+    # only add the dice id if a valid id
+    if dice_id != -1:
+        item["id_value"] = dice_id
+
+    # print("item created:")
+    # print(item)
+    return item
+
+def insert_new_dice(name, defaultFaceFile):
+    """Inserts a new dice object. Called from both POST and PUT. Note that it does not insert any child entries"""
+    # Create a new Dice object
+    new_dice = Dice(name=name, defaultFaceFile=defaultFaceFile)
+
+    # Save the new Dice object to the database
+    new_dice.save()
+
+    # print("insert new dice id = ", new_dice.id)
+    item = create_dice_item(new_dice.id, name, defaultFaceFile)
+
+    return item
+
+
+def post_dice(request):
+    """The HTTP POST method is used to create a resource. It will create dupes if called for an existing entry"""
+    """Action: how do you create the model with name as unique and what exceptions will be raised upon dupes?"""
+    print("post_dice()")
+
+    post_value_name = request.POST.get('name', "Loki")
+    post_value_defaultFaceFile = request.POST.get('defaultFaceFile', "Loki")
+    # print("post_dice()", post_value_name, " ", post_value_defaultFaceFile)
+
+    # create the new dice object
+    item = insert_new_dice(post_value_name, post_value_defaultFaceFile)
+
     data = json.dumps(item)
-    print("data:")
-    print(data)
+    # print("data:")
+    # print(data)
+    return JsonResponse(data, safe=False)
+
+
+def put_dice(request):
+    """The HTTP PUT method is used to create a new resource or replace a resource. It’s similar to the POST method,
+    in that it sends data to a server, but it’s idempotent. This means that the effect of multiple PUT requests
+    should be the same as one PUT request."""
+    print("put_dice()")
+
+    # Parse the query string into a dictionary
+    body = request.body.decode('utf-8')
+    # print(body)
+
+    # print("parsed data:")
+    parsed_data = urllib.parse.parse_qs(body)
+    # print(parsed_data)
+
+    # convert the parsed data to an object
+    # returns a dictionary with lists as values, we'll extract the single values
+    query_args = {k: v[0] for k, v in parsed_data.items()}
+
+    put_value_name = ""
+    put_value_defaultFaceFile = ""
+    missing_params = False
+    # if 'id_value' in query_args:
+    #     query_args['id_value'] = int(query_args['id_value'])  # is there a better way to do this?
+    #     id_value = query_args['id_value']
+    # else:
+    #     missing_params = True
+    if 'name' in query_args:
+        put_value_name = query_args['name']
+    else:
+        missing_params = True
+
+    if 'defaultFaceFile' in query_args:
+        put_value_defaultFaceFile = query_args['defaultFaceFile']
+    else:
+        missing_params = True
+
+    # check if any params are missing - PUT requires that all values be present
+    if missing_params:
+        keys = ""
+        for key in query_args.keys():
+            if len(keys) == 0:
+                keys += key
+            else:
+                keys += ", " + key
+        data_string = request.method + " called but missing one or more parameters. Params = " + keys
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    # check to see if this Dice object already exists (by name) and do not insert a second one if found
+    entry_already_exists = False
+    try:
+        qs = Dice.objects.get(name=put_value_name)
+        entry_already_exists = True
+    except MultipleObjectsReturned:
+        entry_already_exists = True
+    except ObjectDoesNotExist:
+        entry_already_exists = False
+
+    if entry_already_exists:
+        data_string = f"found object with same name. Name = {put_value_name}"
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+    else:
+        # create the new dice object
+        item = insert_new_dice(put_value_name, put_value_defaultFaceFile)
+
+    data = json.dumps(item)
+
+    return JsonResponse(data, safe=False)
+
+
+def patch_dice(request):
+    """The HTTP PATCH method is used to update an existing entry"""
+    print("patch_dice()")
+
+    # Parse the query string into a dictionary
+    body = request.body.decode('utf-8')
+    # print(body)
+
+    # print("parsed data:")
+    parsed_data = urllib.parse.parse_qs(body)
+    # print(parsed_data)
+
+    # convert the parsed data to an object
+    # returns a dictionary with lists as values, we'll extract the single values
+    query_args = {k: v[0] for k, v in parsed_data.items()}
+
+    id_value = 0
+    dice_name = ""
+    dice_defaultFaceFile = ""
+    missing_params = False
+    if 'id_value' in query_args:
+        query_args['id_value'] = int(query_args['id_value'])  # is there a better way to do this?
+        id_value = query_args['id_value']
+    else:
+        missing_params = True
+    if 'name' in query_args:
+        dice_name = query_args['name']
+    else:
+        missing_params = True
+
+    if 'defaultFaceFile' in query_args:
+        dice_defaultFaceFile = query_args['defaultFaceFile']
+    else:
+        missing_params = True
+
+    # check if any params are missing - PUT requires that all values be present
+    if missing_params:
+        keys = ""
+        for key in query_args.keys():
+            if len(keys) == 0:
+                keys += key
+            else:
+                keys += ", " + key
+        data_string = request.method + " called but missing one or more parameters. Params = " + keys
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    # check to see if this Dice object already exists (by name) and do not insert a second one if found
+    found_item = False
+    try:
+        qs = Dice.objects.get(pk=id_value)
+        found_item = True
+    # except MultipleObjectsReturned:
+    #     found_item = False
+    # except ObjectDoesNotExist:
+    #     found_item = False
+    except Exception as e:
+        # Handle any other exceptions that may occur
+        data_string = f"An unexpected error occurred: {e}"
+        print(data_string)
+        data = json.dumps(data_string)
+        return JsonResponse(data, safe=False)
+
+    # update fields and save
+    qs.name = dice_name
+    qs.defaultFaceFile = dice_defaultFaceFile
+    qs.save()
+
+    item = create_dice_item(id_value, dice_name, dice_defaultFaceFile)
+    data = json.dumps(item)
+
     return JsonResponse(data, safe=False)
 
 
@@ -280,23 +448,10 @@ def delete_dice(request):
         return JsonResponse(data, safe=False)
 
     dice.delete()
-    print("item removed: ", dice)
-    print("item removed name: ", dice.name)
+    # print("item removed: ", dice)
+    # print("item removed name: ", dice.name)
 
-    dice_faces_list = []
-
-    item_diceSound = {
-        "name": "",
-        "file": "",
-    }
-
-    item = {
-        "id_value": id_value,
-        "name": dice.name,
-        "defaultFaceFile": dice.defaultFaceFile,
-        "diceFaces": dice_faces_list,
-        "diceSound": item_diceSound
-    }
+    item = create_dice_item(id_value, dice.name, dice.defaultFaceFile)
 
     data = json.dumps(item)
 
