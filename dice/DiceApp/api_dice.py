@@ -137,6 +137,7 @@ def get_dice(request):
     for face in dice_faces:
         # print(f"- {face.name}: {face.file}")
         item_diceFace = {
+            "image_id" : face.pk,
             "name": face.name,
             "file": face.file
         }

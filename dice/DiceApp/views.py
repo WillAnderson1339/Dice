@@ -35,6 +35,8 @@ def page_router(request):
     elif "dice_db_page_1" in request.path.lower():
         items = Dice.objects.all()
         return render(request, "dice_db_page_1.html", {"Dice": items})
+    elif "roll_3" in request.path.lower():
+        return render(request, "rolling_test_3.html")
     else:
         return HttpResponse("unknown page request " + request.path)
 

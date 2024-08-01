@@ -10,6 +10,7 @@ urlpatterns = [
     path("roll_2", views.page_router, name="roll_2"),
     path("rest_test_1", views.page_router, name="rest_test_1"),
     path("dice_db_page_1", views.page_router, name="dice_db_page_1"),
+    path("roll_3", views.page_router, name="roll_3"),
 
     # API - Dice
     # path("getDiceList", views.get_dice_list, name="getDiceList"),
