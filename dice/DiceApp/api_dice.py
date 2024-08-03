@@ -163,6 +163,7 @@ def get_dice(request):
     # I was not sure how to code the if statement to check if the dice_sound object was undefined so used boolean
     if dice_sound_found:
         item_diceSound = {
+            "sound_id": dice_sound.id,
             "name": dice_sound.name,
             "file": dice_sound.file
         }

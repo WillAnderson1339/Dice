@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="Code refactored and cleaned up">
-      <change afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dice/DiceApp/templates/rolling_test_3.html" afterDir="false" />
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="added the rolling_test_3 view and js files.  Worked on loading the DiceList and Dice objects. Not yet implemented inserting the img and sound tags.  Still working on the list management on the JS side.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/dice_db_page_1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dice/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,7 +255,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722456805883</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="added the rolling_test_3 view and js files.  Worked on loading the DiceList and Dice objects. Not yet implemented inserting the img and sound tags.  Still working on the list management on the JS side.">
+      <option name="closed" value="true" />
+      <created>1722550719971</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1722550719971</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -296,6 +299,7 @@
     <MESSAGE value="implemented the common DiceAPI handler and the POST and DELETE verbs" />
     <MESSAGE value="implemented the PATCH and cleaned up code.  Maybe all working now?" />
     <MESSAGE value="Code refactored and cleaned up" />
-    <option name="LAST_COMMIT_MESSAGE" value="Code refactored and cleaned up" />
+    <MESSAGE value="added the rolling_test_3 view and js files.  Worked on loading the DiceList and Dice objects. Not yet implemented inserting the img and sound tags.  Still working on the list management on the JS side." />
+    <option name="LAST_COMMIT_MESSAGE" value="added the rolling_test_3 view and js files.  Worked on loading the DiceList and Dice objects. Not yet implemented inserting the img and sound tags.  Still working on the list management on the JS side." />
   </component>
 </project>
