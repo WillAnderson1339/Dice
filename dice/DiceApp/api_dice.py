@@ -151,6 +151,7 @@ def get_dice(request):
         "id_value": qs.id,
         "name": qs.name,
         "defaultFaceFile": qs.defaultFaceFile,
+        "shakeSoundFile": qs.shakeSoundFile,
         # "diceFaces": dice_faces_list,
         # "diceSound": item_diceSound
     }

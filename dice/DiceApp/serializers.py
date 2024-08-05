@@ -5,4 +5,4 @@ from .models import Dice
 class DiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dice
-        fields = ['name', 'defaultFaceFile']
+        fields = ['name', 'defaultFaceFile', 'shakeSoundFile']

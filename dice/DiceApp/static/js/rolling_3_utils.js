@@ -14,10 +14,12 @@ var intervalId = 0;     // used for the clearInterval function
 
 
 // the dice object
-function DiceObj(id, name, defaultFaceFile, diceRollingId, faces) {
+function DiceObj(id, name, defaultFaceFile, shakeSoundFile, diceRollingId, faces) {
     this.id = id,
     this.name = name;
     this.defaultFaceFile = defaultFaceFile;
+    this.shakeSoundFile = shakeSoundFile;
+    this.shakeSoundElementId = "";
     this.diceRollingId = diceRollingId;
     this.faces = faces;     // will hold an object of {face_id, face_name, face_file}
 
@@ -40,6 +42,8 @@ diceSound_shake = "";
 diceSound_roll1 = "";
 diceSound_roll2 = "";
 diceSound_roll3 = "";
+
+m_diceSound_shaking = "";
 diceSound_rolling = "";
 
 movementVars = {
@@ -65,7 +69,7 @@ function getDiceById(dice_id) {
     // no die found for that id
     console.log("no die found with id:", dice_id);
     faces = [];
-    no_die_found = new DiceObj(-1, "", "", -1, faces);
+    no_die_found = new DiceObj(-1, "", "", "", -1, faces);
     return no_die_found;
 }
 
@@ -116,8 +120,8 @@ $( document ).ready(function() {
 function GetDiceListCallback(data, status) {
     console.log("GetDiceListCallback() !1");
 
-//    console.log("data:", data);
-//    console.log("Status:", status);
+    console.log("data:", data);
+    console.log("Status:", status);
 
     return_val = JSON.parse(data);
 
@@ -131,13 +135,14 @@ function GetDiceListCallback(data, status) {
         $("#DiceListButtons").after(elementText);
         count += 1;
 
-        // add this dice to the dice list
+        // add this dice to the dice list with default values. Full values will be updated from GetDiceCallback
         dice_id = die.pk;
         name = die.fields.name;
         defaultFaceFile = die.fields.defaultFaceFile;
+        shakeSoundFile = "";
         diceRollingId = -1;
         faces = [];
-        diceItem = new DiceObj(dice_id, name, defaultFaceFile, diceRollingId, faces);
+        diceItem = new DiceObj(dice_id, name, defaultFaceFile, shakeSoundFile, diceRollingId, faces);
 
 //        console.log("dice added to list:", diceItem);
         diceList.push(diceItem);
@@ -213,6 +218,29 @@ function GetDiceCallback(data, status) {
                 if (m_chosenDie.id != -1) {
 //                    console.log("found dice " + die.name + " in list", die.id, " ", dice_id);
                     found_dice = true;
+
+                    // add the shaking sound element
+                    if (return_val.shakeSoundFile != "")
+                    {
+                        // add the audio tag to the DOM
+                        console.log("dice shake sound found in return response");
+
+                        // add the audio tag to the DOM
+                        console.log("** sound:", return_val.shakeSoundFile);
+//                        diceSoundId = getSoundIdString(dice_id, "ShakeSound");
+                        diceSoundId = "ShakingSound-DieId"+dice_id;
+                        diceSoundFile = return_val.shakeSoundFile;
+                        elementText = "<audio id=\"" + diceSoundId + "\"><source src=\"" + diceSoundFile + "\" type=\"audio/mpeg\">audio not supported</audio>";
+                        console.log("elementText = ", elementText);
+
+                        $("#dice_sounds_id").append(elementText);
+
+                        // update the shake sound ID in the Dice object
+                        m_chosenDie.shakeSoundFile = return_val.shakeSoundFile; // ToDo: is this needed?  just use the element ID?
+                        m_chosenDie.shakeSoundElementId = diceSoundId;
+//                        console.log("sound... ");
+//                        console.log("sound = ", return_val.shakeSoundFile);
+                    }
                     if (return_val.hasOwnProperty('diceFaces') == false) {
                         console.log("no dice faces in return response");        // ToDo: update this code
                     }
@@ -294,7 +322,7 @@ function loadDiceImages() {
         name = "Name" + i;
         defaultFaceFile = "TBD";
         faces = ["", ""];
-        diceItem = new DiceObj(i, name, defaultFaceFile, faces);
+        diceItem = new DiceObj(i, name, defaultFaceFile, "", -1, faces);
         diceImages.push(diceItem);
     }
 
@@ -483,6 +511,11 @@ function Action() {
 
     // play the audio
 //    diceSound_shake.play();
+//    m_diceSound_shaking.play();
+    console.log("shakeSoundElementID= ", m_chosenDie.shakeSoundElementId)
+    diceSound_shaking = document.getElementById(m_chosenDie.shakeSoundElementId);
+//    m_chosenDie.shakeSoundElementId.play();
+    diceSound_shaking.play();
 
     // clear the table and reset the vars
     Clear();
@@ -494,10 +527,14 @@ function Action() {
         dieToRoll = getDiceById(m_chosenDiceId);
         if (dieToRoll.id != -1) {
             sound_id = dieToRoll.diceRollingSound;
-            console.log("getting sound id string from die:", dieToRoll.id);
+//            console.log("getting sound id string from die:", dieToRoll.id);
 //            diceSoundId = getSoundIdString(dieToRoll.id, dieToRoll.diceRollingId);
+//            shakeSoundElementId = dieToRoll.shakeSoundElementId;
             diceSoundId = dieToRoll.diceRollingId;
-            console.log("* soundIDString to retrieve audio element = ", diceSoundId);
+//            console.log("* soundIDString to retrieve audio element = ", diceSoundId);
+
+//            console.log("shakeSoundElementID= ", dieToRoll.shakeSoundElementId)
+//            m_diceSound_shaking = document.getElementById(dieToRoll.shakeSoundElementId);
             diceSound_rolling = document.getElementById(diceSoundId);
         }
     }
