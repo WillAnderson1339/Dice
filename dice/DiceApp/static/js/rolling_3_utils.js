@@ -4,8 +4,9 @@ var tickCount = 1;
 const tickMax = 11;
 var tickRandom = -1;        // This will hold the randomized number choice dice face
 var dieToDraw = "dice_smile";
-const numDieFaces = 6;
+const m_numDieFaces = 6;
 var m_chosenDiceId = -1;    // holds the id of the dice to roll
+var m_chosenDie = null;     // holds the dice object of the dice to roll
 diceList   = [];
 diceImages = [];
 diceSounds = [];
@@ -68,9 +69,16 @@ function getDiceById(dice_id) {
     return no_die_found;
 }
 
+// helper function to determine the id string of the image tag in the DOM. Used for inserting and the retrieving the tag
+function getImageIdString (dice_id, image_id) {
+    idString = "Image-DieId" + dice_id + "-ImageId" + image_id;
+    console.log("imageID String:", idString);
+    return idString;
+}
+
 // helper function to determine the id string of the sound tag in the DOM. Used for inserting and the retrieving the tag
 function getSoundIdString (dice_id, sound_id) {
-    idString = "RollingSound-DieId" + dice_id + "-SoundId" + 222;
+    idString = "RollingSound-DieId" + dice_id + "-SoundId" + sound_id;
     console.log("soundID String:", idString);
     return idString;
 }
@@ -142,17 +150,22 @@ function ChooseDie(dice_id) {
     text = String(dice_id);
     $('#DiceNameToRoll').text(text);
     m_chosenDiceId = dice_id;
+    console.log("m_chosenDiceId = ", m_chosenDiceId);
 
-    for (die of diceList) {
+//    for (die of diceList) {
 //        console.log("checking dice name", die.name, "id", die.id);
-        if (die.id == dice_id)
+//        if (die.id == dice_id)
+        m_chosenDie = getDiceById(m_chosenDiceId);
+        console.log("chosen die:", m_chosenDie);
+
+        if (m_chosenDie.id != -1)
         {
 //            console.log("found dice in list");
-            if (die.faces.length == 0) {
+            if (m_chosenDie.faces.length == 0) {
                 console.log("no faces in this dice yet");
 
                 // load the chosen dice info
-                dice_id = die.id;
+//                dice_id = m_chosenDie.id;
                 url = "DiceAPI";
                 console.log("url to call: \"", url, "\"  data param =", dice_id);
 
@@ -163,14 +176,14 @@ function ChooseDie(dice_id) {
                     success: GetDiceCallback,
                     error: function(data, status) {console.log("ERROR calling url:", url);}
                 });
-                break;
+//                break;
             }
             else
             {
                 console.log("found faces in this dice");
             }
         }
-    }
+//    }
 }
 
 function GetDiceCallback(data, status) {
@@ -189,29 +202,42 @@ function GetDiceCallback(data, status) {
             display_text = return_val;      // TODO: need to update this code
         }
         if (typeof return_val == "object") {
+            console.log("return_val:", return_val);
             dice_id = return_val.id_value;
+//            dice_id = return_val.pk;
             console.log("looking for dice id ", dice_id);
             found_dice = false;
-            for (die of diceList) {
-                console.log("checking dice name ", die.name, "die.id = ", die.id, "dice_id = ", dice_id);
-                if (die.id == dice_id)
-                {
-                    console.log("found dice " + die.name + " in list", die.id, " ", dice_id);
+//            for (die of diceList) {
+//                console.log("checking dice name ", die.name, "die.id = ", die.id, "dice_id = ", dice_id);
+//                if (die.id == dice_id)
+                if (m_chosenDie.id != -1) {
+//                    console.log("found dice " + die.name + " in list", die.id, " ", dice_id);
                     found_dice = true;
                     if (return_val.hasOwnProperty('diceFaces') == false) {
-                        console.log("no dice faces in return response");
+                        console.log("no dice faces in return response");        // ToDo: update this code
                     }
                     else {
-                        console.log("dice faces found in return response");
+//                        console.log("dice faces found in return response");
+
                         for (index in return_val.diceFaces) {
+                            // add the img tag to the DOM
+                            image_id = getImageIdString(dice_id, return_val.diceFaces[index].image_id);
+                            image_name = return_val.diceFaces[index].name;
+                            image_file = return_val.diceFaces[index].file;
+                            elementText = "<img id=\"" + image_id + "\" name=\"" + image_name + "\" src=\"" + image_file + "\" alt=\"" + image_id + "\" width=\"32\" height=\"32\">";
+                            console.log("elementText = ", elementText);
+                            $("#dice_images_id").append(elementText);
+
+                            // update the faces image info in the list
                             item = {
-                                "id" : return_val.diceFaces[index].image_id,
+                                "image_id" : return_val.diceFaces[index].image_id,
                                 "name" : return_val.diceFaces[index].name,
                                 "file" : return_val.diceFaces[index].file
                             };
-                            die.faces.push(item);
+                            m_chosenDie.faces.push(item);
                         }
-                        console.log("faces:", die.faces);
+//                        console.log("faces:", m_chosenDie.faces);
+                        console.log("added ", m_chosenDie.faces.length, "images");
                     }
 
                     // add the sound
@@ -219,6 +245,7 @@ function GetDiceCallback(data, status) {
                         console.log("no dice sound in return response");
                     }
                     else {
+                        // add the audio tag to the DOM
                         console.log("dice sounds found in return response");
                         // add the audio tag to the DOM
                         console.log("** sound:", return_val.diceSound);
@@ -230,13 +257,13 @@ function GetDiceCallback(data, status) {
                         $("#dice_sounds_id").append(elementText);
 
                         // update the sound ID in the list
-                        die.diceRollingId = diceSoundId;
-                        console.log("rolling sound updated: ", diceSoundId);
+                        m_chosenDie.diceRollingId = diceSoundId;
+                        console.log("* rolling sound updated: ", diceSoundId);
                     }
                     // ToDO: should I add a break statement here?
-                    break;
+//                    break;
                 }
-            }
+//            }
             if (found_dice == false) {
                 console.log("could not find die id", dice_id)
             }
@@ -306,6 +333,7 @@ function loadDiceImages() {
     diceImages[0].faces = faces;
 
     // insert the image elements into the Dom
+    numDieFaces = m_numDieFaces;    // change this to setting to the num die faces for this die
     numThisDieFaces = diceImages[0].faces.length;
     for (let j = 0; j < numDieFaces; j++) {
         diceFaceId = diceImages[0].faces[j].face_id
@@ -460,21 +488,25 @@ function Action() {
     Clear();
 
     // pick a dice sound and set a timer to start the rolling (to allow the shake sound to complete)
-    diceSound_rolling = PickDiceSound();
+//    diceSound_rolling = PickDiceSound();
     if (m_chosenDiceId != -1)
     {
         dieToRoll = getDiceById(m_chosenDiceId);
         if (dieToRoll.id != -1) {
             sound_id = dieToRoll.diceRollingSound;
-            console.log("getting sound id string from die:", dieToRoll);
-            diceSoundId = getSoundIdString(dieToRoll.id, dieToRoll.diceRollingId);
+            console.log("getting sound id string from die:", dieToRoll.id);
+//            diceSoundId = getSoundIdString(dieToRoll.id, dieToRoll.diceRollingId);
+            diceSoundId = dieToRoll.diceRollingId;
+            console.log("* soundIDString to retrieve audio element = ", diceSoundId);
             diceSound_rolling = document.getElementById(diceSoundId);
         }
     }
 
+    // sets a timer with a callback to allow the shake dice sound to finish. Callback will start timer for the dice roll
     id1 = setTimeout(StartRoll, diceShakeInterval, 1);
 }
 
+/*
 function PickDiceSound() {
     random = Math.floor(Math.random() * 3) + 1;
 
@@ -497,27 +529,46 @@ function PickDiceSound() {
 
     return diceSound;
 }
+*/
 
 function StartRoll() {
+//    numDieFaces = m_numDieFaces;    // change this to setting to the num die faces for this die
+    numDieFaces = m_chosenDie.faces.length;
+
     // choose the random dice face result number
+    // ToDO: fix this - it is not random!
+    // Wait - is this the random face to start with?
     tickRandom = Math.floor(Math.random() * numDieFaces) + 1;
+    console.log("!!! CHOOSING RANDOM ANSWER = ", tickRandom);
 
     // ensure the dice rolls for a few faces before landing on the final result
     if (tickRandom <= tickMax - numDieFaces) {
         tickRandom += numDieFaces;
     }
 
+    // sets a timer with a callback to show the next die face
 //    id1 = setTimeout(timer_func, timerInterval, 1);
     intervalId = setInterval(ShowNextDie, timerInterval, 1);
 }
 
-/* called from the Next button */
+/* callback from the timer */
 function ShowNextDie() {
+    console.log("ShowNextDie() tickCount = ", tickCount);
+
+//    numDieFaces = m_numDieFaces;    // change this to setting to the num die faces for this die
+    numDieFaces = m_chosenDie.faces.length;
     //console.log("tickCount = ", tickCount, " remainder = ", (tickCount + 2) % numDieFaces)
 
     diceSound_rolling.play();
 
     // tickCount starts at -1 and we want numbers 0-5
+    index = (tickCount + 1) % numDieFaces;
+    console.log("index = ", index, "(tickCount + 1 = ", tickCount + 1, "numDieFaces = ", numDieFaces, ")");
+//    imageIdString = m_chosenDie.faces[index].image_id;
+    imageIdString = getImageIdString(m_chosenDie.id, m_chosenDie.faces[index].image_id)
+//    console.log("imageIdString = ", imageIdString);
+
+    /*
     switch ((tickCount + 1) % numDieFaces) {
         case 0:
             dieName = "dice_smile";
@@ -540,19 +591,24 @@ function ShowNextDie() {
         default:
             dieName = "dice_smile";
     }
-
     ShowSingleDie(dieName);
+    */
+
+    ShowSingleDie(imageIdString);
 
 //    if (tickCount >= tickMax) {
+    console.log("tickCount = ", tickCount, "tickRandom = ", tickRandom);
     if (tickCount >= tickRandom) {
         clearInterval(intervalId);
         diceSound_rolling.pause();
-        ShowResult();
+        ShowResult(m_chosenDie.faces[index].name);
     }
 }
 
 /* called from the buttons labeled with "First", "Second", "Third", etc. and also internally from the ShowNextDie() */
 function ShowSingleDie(diceName) {
+    console.log("ShowSingleDie()  image = ", diceName);
+
     dieToDraw = diceName
     var img = document.getElementById(dieToDraw);
     rotation = Number($('#rotation').val());
@@ -623,8 +679,18 @@ function Clear() {
 }
 
 /* Shows the resulting (final) dice role */
-function ShowResult() {
-    element = document.getElementById("resultId");
-    element.innerHTML = dieToDraw;
+function ShowResult(resultName) {
+    console.log("ShowResult() with name = ", resultName);
 
+//    element = document.getElementById("resultId");
+//    element.innerHTML = dieToDraw;
+
+//    id = m_chosenDie.id;
+//    name = $('#resultId').attr('name');
+//    console.log("name = ", name);
+//    name = $('#resultId').prop('name');
+//    console.log("name = ", name);
+
+    $('#resultId').text(resultName);
+//    $('#DiceNameToRoll').text(text);
 }

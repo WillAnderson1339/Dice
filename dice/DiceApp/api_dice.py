@@ -157,6 +157,7 @@ def get_dice(request):
 
     # only add the faces if there are any (client will handle showing face info based on the presence of this attrib
     if len(dice_faces_list) > 0:
+        item["numDiceFaces"] = len(dice_faces_list)
         item["diceFaces"] = dice_faces_list
 
     # only add the sound if there are any (client will handle showing sound info based on the presence of this attrib

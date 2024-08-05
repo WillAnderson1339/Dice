@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="added the rolling_test_3 view and js files.  Worked on loading the DiceList and Dice objects. Not yet implemented inserting the img and sound tags.  Still working on the list management on the JS side.">
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="working on rolling_3.  First time the rolling sound worked! Still working on the sounds (cleanup etc.) and then the dice images.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dice/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,7 +263,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722550719971</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="working on rolling_3.  First time the rolling sound worked! Still working on the sounds (cleanup etc.) and then the dice images.">
+      <option name="closed" value="true" />
+      <created>1722709415549</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1722709415549</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -300,6 +308,7 @@
     <MESSAGE value="implemented the PATCH and cleaned up code.  Maybe all working now?" />
     <MESSAGE value="Code refactored and cleaned up" />
     <MESSAGE value="added the rolling_test_3 view and js files.  Worked on loading the DiceList and Dice objects. Not yet implemented inserting the img and sound tags.  Still working on the list management on the JS side." />
-    <option name="LAST_COMMIT_MESSAGE" value="added the rolling_test_3 view and js files.  Worked on loading the DiceList and Dice objects. Not yet implemented inserting the img and sound tags.  Still working on the list management on the JS side." />
+    <MESSAGE value="working on rolling_3.  First time the rolling sound worked! Still working on the sounds (cleanup etc.) and then the dice images." />
+    <option name="LAST_COMMIT_MESSAGE" value="working on rolling_3.  First time the rolling sound worked! Still working on the sounds (cleanup etc.) and then the dice images." />
   </component>
 </project>
