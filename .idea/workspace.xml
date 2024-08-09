@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="additional dice image files">
-      <change afterPath="$PROJECT_DIR$/dice/DiceApp/migrations/0002_dice_shakesoundfile.py" afterDir="false" />
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="Added the shaking sound. Still need code cleanup....">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/api_dice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/DiceApp/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dice/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dice/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -290,7 +285,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722889639665</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Added the shaking sound. Still need code cleanup....">
+      <option name="closed" value="true" />
+      <created>1722895104771</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1722895104771</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -330,6 +333,7 @@
     <MESSAGE value="working on rolling_3.  First time the rolling sound worked! Still working on the sounds (cleanup etc.) and then the dice images." />
     <MESSAGE value="Yay!  It works.  First implementation of everything working.  Need to check it and clean everything up..." />
     <MESSAGE value="additional dice image files" />
-    <option name="LAST_COMMIT_MESSAGE" value="additional dice image files" />
+    <MESSAGE value="Added the shaking sound. Still need code cleanup...." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added the shaking sound. Still need code cleanup...." />
   </component>
 </project>
