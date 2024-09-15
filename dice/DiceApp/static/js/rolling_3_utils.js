@@ -1,11 +1,17 @@
 const timerInterval = 150;
 const diceShakeInterval = 1000;
+const DEFAULT_X = 10;
+const DEFAULT_Y = 10;
+const DEFAULT_ROTATION = 45;
+const DEFAULT_SCALE = 1;
+const DEFAULT_INTERVAL = 5;
+
 var tickCount = 1;
 const tickMax = 11;
 var tickRandom = -1;        // This will hold the randomized number choice dice face
 var dieToDraw = "dice_smile";
 const m_numDieFaces = 6;
-var m_chosenDiceId = -1;    // holds the id of the dice to roll
+//var m_chosenDiceId = -1;    // holds the id of the dice to roll  .. no longer needed - using the module scope die object instead of the die ID
 var m_chosenDie = null;     // holds the dice object of the dice to roll
 diceList   = [];
 diceImages = [];
@@ -47,14 +53,14 @@ m_diceSound_shaking = "";
 diceSound_rolling = "";
 
 movementVars = {
-    x : 10,
-    y : 10,
-    x_delta : 96,
-    y_delta : 32,
+    x : 0,
+    y : 0,
+    x_delta  : 0,
+    y_delta  : 0,
     rotation : 0,
-    rotation_delta: 45,
-    scale : 2,
-    interval : 3
+    rotation_delta: 0,
+    scale    : 0,
+    interval : 0
 };
 
 /* Helper function to return the die by id. Check the returned die id for -1 for die not found */
@@ -73,14 +79,14 @@ function getDiceById(dice_id) {
     return no_die_found;
 }
 
-/* helper function to determine the id string of the image tag in the DOM. Used for inserting and the retrieving the tag */
+/* Helper function to determine the id string of the image tag in the DOM. Used for inserting and the retrieving the tag */
 function getImageIdString (dice_id, image_id) {
     idString = "Image-DieId" + dice_id + "-ImageId" + image_id;
 //    console.log("imageID String:", idString);
     return idString;
 }
 
-/* helper function to determine the id string of the sound tag in the DOM. Used for inserting and the retrieving the tag */
+/* Helper function to determine the id string of the sound tag in the DOM. Used for inserting and the retrieving the tag */
 function getSoundIdString (dice_id, sound_id) {
     idString = "RollingSound-DieId" + dice_id + "-SoundId" + sound_id;
 //    console.log("soundID String:", idString);
@@ -96,9 +102,12 @@ $( document ).ready(function() {
 //    page = document.URL.split("/").pop();
 //    console.log( page );
 
+    // initialize the variables
+    initVars();
+
     // get the list of dice
     url = "DiceAPI";
-    console.log("url to call: \"", url, "\"  data param = empty");
+    //console.log("url to call: \"", url, "\"  data param = empty");
 
     $.ajax({
         type: 'GET',
@@ -107,14 +116,11 @@ $( document ).ready(function() {
         success: GetDiceListCallback,
         error: function(data, status) {console.log("ERROR calling url:", url);}
     });
-
-    // initialize the variables
-    initVars();
 });
 
 
 function GetDiceListCallback(data, status) {
-    console.log("GetDiceListCallback() !1");
+//    console.log("GetDiceListCallback() !1");
 
 //    console.log("data:", data);
 //    console.log("Status:", status);
@@ -144,14 +150,15 @@ function GetDiceListCallback(data, status) {
         diceList.push(diceItem);
     }
 
-    // set the currently selected dice to the last one loaded (had to pick something - note that an invalid or missing ID will be handled by the funtion)
-    ChooseDie(dice_id);
+    // set the currently selected dice to the last one loaded (had to pick something - note that an invalid or missing ID will be handled by the function)
+    // changed this to allow not selecting a dice during init - forcing the user to choose the dice to roll
+    //ChooseDie(dice_id);
 }
 
 function ChooseDie(dice_id) {
-    console.log("ChooseDie() with id=", dice_id);
+    //console.log("ChooseDie() with id=", dice_id);
 
-    m_chosenDiceId = dice_id;       // ToDo: no longer needed - using the module scope die object instead of the die ID
+    //m_chosenDiceId = dice_id;       // ToDo: no longer needed - using the module scope die object instead of the die ID
 
     // update the element with the chosen die for rolling
     text = String(dice_id);
@@ -165,7 +172,7 @@ function ChooseDie(dice_id) {
         if (m_chosenDie.faces.length == 0) {
             // load the chosen dice info
             url = "DiceAPI";
-            console.log("url to call: \"", url, "\"  data param =", dice_id);
+            //console.log("url to call: \"", url, "\"  data param =", dice_id);
 
             $.ajax({
                 type: 'GET',
@@ -187,7 +194,7 @@ function ChooseDie(dice_id) {
 }
 
 function GetDiceCallback(data, status) {
-    console.log("GetDiceCallback()  !1");
+    //console.log("GetDiceCallback()  !1");
 
 //    console.log("data:", data);
 //    console.log("status:", status);
@@ -269,19 +276,16 @@ function GetDiceCallback(data, status) {
 
 
 function initVars() {
-    rotation = Number($('#rotation').val());
-    scale = Number($('#scale').val());
-    interval = Number($('#interval').val());
-
-    movementVars.x = 10;
-    movementVars.y = 10;
-    movementVars.x_delta = 32;
+/*
+    movementVars.x = 0;
+    movementVars.y = 0;
+    movementVars.x_delta = 0;
     movementVars.y_delta = 0;
     movementVars.rotation = 0;
-    movementVars.rotation_delta = rotation;
-    movementVars.scale = scale;
-    movementVars.interval = interval;
-
+    movementVars.rotation_delta = DEFAULT_ROTATION;
+    movementVars.scale          = DEFAULT_SCALE;
+    movementVars.interval       = DEFAULT_INTERVAL;
+*/
     tickCount = -1;
     dieToDraw = "dice_smile";
 }
@@ -298,6 +302,9 @@ function drawImage(ctx, img, x, y, degrees = 0, scale = 1){
   ctx.restore();
 }
 
+/****************************************************************
+Clears an image so there is not a shadow of the previous image
+****************************************************************/
 function clearImage(ctx, img, x, y, degrees = 0, scale = 1){
   ctx.save();
   ctx.translate(x + img.width * scale / 2, y + img.height * scale / 2);
@@ -308,38 +315,12 @@ function clearImage(ctx, img, x, y, degrees = 0, scale = 1){
   ctx.restore();
 }
 
-function updateMovementVars() {
-    console.log("[updateMovementVars]");
-
-    movementVars.x += movementVars.x_delta;
-    movementVars.y += movementVars.y_delta;
-    movementVars.rotation += movementVars.rotation_delta;
-
-    console.log(movementVars)
-}
-
-/*/  No longer used
-
-function timer_func(timerId) {
-
-    if (tickCount < tickMax) {
-        updateMovementVars();
-
-        draw();
-
-        // reset the timer
-        tickCount += 1;
-        setTimeout(timer_func, timerInterval, timerId);
-    }
-}
-/*/
 
 function draw(drawNewImage = true) {
     c = document.getElementById("canvas_1");
     ctx = c.getContext("2d");
     img = document.getElementById(dieToDraw);
 
-    //console.log("  draw() x = ", movementVars.x, " y = ", movementVars.y, " rotation = ", movementVars.rotation, " scale = ", movementVars.scale)
     if (drawNewImage) {
         drawImage(ctx, img, movementVars.x, movementVars.y, movementVars.rotation, movementVars.scale)
     }
@@ -348,9 +329,15 @@ function draw(drawNewImage = true) {
     }
 }
 
-/* called from the Action button */
-function Action() {
-    console.log( "Action()" );
+/* called from the RollDice button */
+function RollDice() {
+//    console.log( "RollDice()" );
+
+    // if we do not have a valid dice just return
+    if (m_chosenDie == null || m_chosenDie.id == -1) {
+        console.log("not yet selected a valid dice");
+        return;
+    }
 
     // play the audio
     diceSound_shaking = document.getElementById(m_chosenDie.shakeSoundElementId);
@@ -370,7 +357,6 @@ function Action() {
 
 
 function StartRoll() {
-//    numDieFaces = m_numDieFaces;    // change this to setting to the num die faces for this die
     numDieFaces = m_chosenDie.faces.length;
 
     // choose the random dice face result number
@@ -410,15 +396,12 @@ function ShowNextDie() {
     }
 }
 
-/* called from the buttons labeled with "First", "Second", "Third", etc. and also internally from the ShowNextDie() */
+/* called from ShowNextDie() */
 function ShowSingleDie(diceName) {
 //    console.log("ShowSingleDie()  image = ", diceName);
 
     dieToDraw = diceName
-    var img = document.getElementById(dieToDraw);
-    rotation = Number($('#rotation').val());
-    scale = Number($('#scale').val());
-    interval = Number($('#interval').val());
+    img = document.getElementById(dieToDraw);
 
     //console.log("tickCount = ", tickCount, " interval = ", movementVars.interval, " result = ", Math.floor(tickCount / movementVars.interval), "even", Math.floor(tickCount / movementVars.interval) % 2 );
 
@@ -427,19 +410,20 @@ function ShowSingleDie(diceName) {
 
     // if this is the first dice to draw then draw in the top left corner
     if (tickCount == -1) {
-        movementVars.interval = interval;
-        movementVars.x = 10;
-        movementVars.x_delta = (img.width * scale) * 1.25;
-        movementVars.y = 10;
-        movementVars.y_delta = (img.height * scale) * .25;
+        movementVars.rotation_delta = DEFAULT_ROTATION;
+        movementVars.interval = DEFAULT_INTERVAL;
+        movementVars.scale = DEFAULT_SCALE;
+        movementVars.x = DEFAULT_X;
+        movementVars.x_delta = (img.width * movementVars.scale) * 1.25;
+        movementVars.y = DEFAULT_Y;
+        movementVars.y_delta = (img.height * movementVars.scale) * .25;
         movementVars.rotation = 0;
-        movementVars.scale = scale;
     }
 
     // if not the first position then determine the new position
     else
     {
-        movementVars.interval = interval;
+//        movementVars.interval = interval;
         // if tick count divided by interval is even move down else move up
         if (Math.floor(tickCount / movementVars.interval) % 2 == 0) {
             dir = 1;
@@ -451,14 +435,12 @@ function ShowSingleDie(diceName) {
         }
 
         movementVars.x += movementVars.x_delta;
-        movementVars.x_delta = (img.width * scale) * 1.25;
+        movementVars.x_delta = (img.width * movementVars.scale) * 1.25;
         movementVars.y += movementVars.y_delta * dir;
-        movementVars.y_delta = (img.height * scale) * .25;
-        movementVars.rotation += rotation;
-        movementVars.scale = scale;
+        movementVars.y_delta = (img.height * movementVars.scale) * .25;
+        movementVars.rotation += movementVars.rotation_delta;
     }
 
-    //console.log("image width = ", img.width, " scale = ", scale, " delta = ", movementVars.x_delta);
     //console.log(movementVars);
 
     draw();
@@ -467,14 +449,13 @@ function ShowSingleDie(diceName) {
 }
 
 
-/* called from the Clear button and also internally from the Action() function */
+/* called from the Clear button and also internally from the RollDice() function */
 function Clear() {
     c = document.getElementById("canvas_1");
     ctx = c.getContext("2d");
 
     ctx.clearRect(0, 0, c.width,c.height);
-    element = document.getElementById("resultId");
-    element.innerHTML = "";
+    $('#resultId').text("");
 
     initVars();
 }

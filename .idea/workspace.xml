@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="Added the shaking sound. Still need code cleanup....">
+    <list default="true" id="cc2878d8-ccb4-4cdb-8fda-ca5c751ad746" name="Changes" comment="cleaned up the code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/static/js/rolling_3_utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/DiceApp/templates/rolling_test_3.html" beforeDir="false" afterPath="$PROJECT_DIR$/dice/DiceApp/templates/rolling_test_3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dice/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dice/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,16 +37,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Python.main.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Dice Example" />
@@ -293,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722895104771</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="cleaned up the code">
+      <option name="closed" value="true" />
+      <created>1723232185336</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1723232185337</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -309,7 +319,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Initial project commit" />
     <MESSAGE value="Initial implementation of dice images" />
     <MESSAGE value="Dice rolling test 1 pretty good - almost done MVP" />
     <MESSAGE value="Beginning of creating Test 2 with the dynamic dice image loading" />
@@ -334,6 +343,7 @@
     <MESSAGE value="Yay!  It works.  First implementation of everything working.  Need to check it and clean everything up..." />
     <MESSAGE value="additional dice image files" />
     <MESSAGE value="Added the shaking sound. Still need code cleanup...." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added the shaking sound. Still need code cleanup...." />
+    <MESSAGE value="cleaned up the code" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleaned up the code" />
   </component>
 </project>
